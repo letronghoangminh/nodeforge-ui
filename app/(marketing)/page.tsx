@@ -51,7 +51,7 @@ const MarketingPage = () => {
             <Button
                 className=""
             >
-                <Link href={"/sign-in"} >
+                <Link href={"/auth/login"} >
                     Get KhonLang for free
                 </Link>
             </Button>

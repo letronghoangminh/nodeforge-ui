@@ -4,7 +4,6 @@ import { useProModal } from "@/hooks/use-pro-modal"
 import { Dialog, DialogContent } from "../ui/dialog"
 import Image from "next/image";
 import { Button } from "../ui/button";
-import { toast } from "sonner";
 
 export const ProModal = () => {
     const proModal = useProModal();
@@ -47,7 +46,7 @@ export const ProModal = () => {
                     </div>
                     <Button
                         className="w-full"
-                        variant={"primary"}
+                        variant="destructive"
                         onClick={onClick}
                     >
                         Upgrade

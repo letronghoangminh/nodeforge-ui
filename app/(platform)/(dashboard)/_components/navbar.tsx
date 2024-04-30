@@ -7,8 +7,23 @@ import { Separator } from "@/components/ui/separator";
 import { Button } from "@/components/ui/button";
 import { Plus } from "lucide-react";
 import { UserNav } from "./user-nav";
+// import { useSession } from "next-auth/react"
+import { useRouter } from "next/navigation";
 
 export const Navbar = () => {
+
+    // const { data: session, status } = useSession();
+    // const router = useRouter();
+
+    // if(status === 'loading'){
+    //     return null
+    // }
+    // if(!session){
+    //     return router.replace('/auth/login')
+    // }
+    // const user = session!.user
+    // console.log("user",user);
+
     return ( 
         <nav className=" fixed top-0 z-50  w-full px-4 h-20 border-b shadow-sm bg-white flex justify-center " >
             <div className="h-full w-[1200px] flex items-center" >
