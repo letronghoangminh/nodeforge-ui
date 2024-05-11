@@ -12,17 +12,6 @@ import { useRouter } from "next/navigation";
 
 export const Navbar = () => {
 
-    // const { data: session, status } = useSession();
-    // const router = useRouter();
-
-    // if(status === 'loading'){
-    //     return null
-    // }
-    // if(!session){
-    //     return router.replace('/auth/login')
-    // }
-    // const user = session!.user
-    // console.log("user",user);
 
     return ( 
         <nav className=" fixed top-0 z-50  w-full px-4 h-20 border-b shadow-sm bg-white flex justify-center " >

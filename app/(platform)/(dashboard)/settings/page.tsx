@@ -1,11 +1,11 @@
+"use client"
 import { useCurrentUser } from "@/hooks/use-current-user";
 
-const SettingsPage = async() => {
+const SettingsPage = () => {
     const user = useCurrentUser();
 
     return ( 
-        <div>
-            
+        <div>    
             <h1>Settings</h1>
             <p>Settings page content</p>
             <div>{JSON.stringify(user)}</div>

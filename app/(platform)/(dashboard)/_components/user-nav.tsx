@@ -18,13 +18,16 @@ import {
 import { useProModal } from "@/hooks/use-pro-modal";
 import { logout } from "@/actions/logout"
 import { useCurrentUser } from "@/hooks/use-current-user"
+import { useRouter } from "next/navigation"
 
 export function UserNav() {
   const user = useCurrentUser()
   const {onOpen} = useProModal()
+  const router = useRouter()
 
   const signOut = () => {
     logout()
+    router.push("/auth/login")
   }
 
   return (

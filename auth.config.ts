@@ -46,7 +46,6 @@ export default {
 
             return null;
           }
-          console.log("res", res);
           const user = await res.json();
           return user;
         }
