@@ -15,7 +15,7 @@ export const NewVerificationForm = () => {
   const { data: session, status } = useSession();
 
   const newVerification = useCallback(async (token: string) => {
-    await fetch("http://localhost:3001/" + "api/auth/verify" + `?token=${token}`,
+    await fetch(process.env.BACKEND_URL + "api/auth/verify" + `?token=${token}`,
       {
         method: "GET",
         headers: {
