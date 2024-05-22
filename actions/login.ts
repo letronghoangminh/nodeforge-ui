@@ -30,6 +30,8 @@ export const login = async (values: z.infer<typeof LoginSchema>) => {
     return { error: "User does not exist!" };
   }
 
+  console.log("existingUser.isVerified", existingUser);
+
   if (!existingUser.isVerified) {
     try {
       await fetch(process.env.BACKEND_URL + `api/users/verify`, {

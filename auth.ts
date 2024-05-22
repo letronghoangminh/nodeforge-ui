@@ -25,7 +25,7 @@ export const {
         return false;
       }
 
-      return true;
+    return true;
     },
     async jwt({ token, user }) {
       if (user) return { ...token, ...user };
