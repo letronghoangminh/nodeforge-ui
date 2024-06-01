@@ -2,27 +2,30 @@
 
 import { DeploymentClient } from "./_components/client";
 import { DeploymentColumn } from "./_components/columns";
+import { headers } from "next/headers";
+import UseGetDeployment from "@/actions/getDeployments";
+import { auth } from "@/auth";
 
+
+async function getData() {
+    const session = await auth();
+
+    const res = await fetch( process.env.BACKEND_URL + `api/deployment`, {
+        headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${session?.accessToken}`
+        }
+    })
+    if (!res.ok) {
+      throw new Error('Failed to fetch data')
+    }
+   
+    return res.json()
+  }
+   
 
 const DashBardPage = async () => {
-
-
-    const data = [
-        {
-            id: "1",
-            name: "Test afgg",
-            status: "Deployed",
-            type: "Service",
-            reason: "sdgdgdgdsagdsagdasgds dsag dsg sadg dsg dsg dsfg fds g",
-            subdomain: "https://www.google.com",
-            framework: "React",
-            repository: {
-                name: "name",
-                branch: "branch",
-                url: "https://www.google.com"
-            }
-        }
-    ]
+    let data:any[] = await getData();
 
     const formattedDeployments:DeploymentColumn[]  = data.map((deployment) => {
         return {

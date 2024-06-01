@@ -1,7 +1,7 @@
 "use client"
 
 
-import { CreditCard, LogOut, PlusCircle, Settings, User } from "lucide-react"
+import { CreditCard, LogOut, Settings, User } from "lucide-react"
 
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Button } from "@/components/ui/button"
@@ -22,7 +22,7 @@ import { useRouter } from "next/navigation"
 
 export function UserNav() {
   const user = useCurrentUser()
-  const {onOpen} = useProModal()
+  // const {onOpen} = useProModal()
   const router = useRouter()
 
   const signOut = () => {
@@ -30,12 +30,13 @@ export function UserNav() {
     router.push("/auth/login")
   }
 
+
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <Button variant="ghost" className="relative h-8 w-8 rounded-full">
           <Avatar className="h-8 w-8">
-            <AvatarImage src={user?.avatar} alt="@shadcn" />
+            <AvatarImage src={""} alt="@shadcn" />
             <AvatarFallback>HM</AvatarFallback>
           </Avatar>
         </Button>
@@ -56,7 +57,7 @@ export function UserNav() {
             <span>Profile</span>
             <DropdownMenuShortcut>⇧⌘P</DropdownMenuShortcut>
           </DropdownMenuItem>
-          <DropdownMenuItem onClick={onOpen} >
+          <DropdownMenuItem onClick={() => router.push("subscription")} >
             <CreditCard className="mr-2 h-4 w-4" />
             <span>Billing</span>
             <DropdownMenuShortcut>⌘B</DropdownMenuShortcut>
@@ -66,10 +67,10 @@ export function UserNav() {
             <span>Settings</span>
             <DropdownMenuShortcut>⌘S</DropdownMenuShortcut>
           </DropdownMenuItem>
-          <DropdownMenuItem>
+          {/* <DropdownMenuItem>
             <PlusCircle className="mr-2 h-4 w-4" />
             <span>New Team</span>
-          </DropdownMenuItem>
+          </DropdownMenuItem> */}
         </DropdownMenuGroup>
         <DropdownMenuSeparator />
         {user && <DropdownMenuItem onClick={signOut} >

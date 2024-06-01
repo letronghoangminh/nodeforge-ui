@@ -11,7 +11,7 @@ import { UserNav } from "./user-nav";
 import { useRouter } from "next/navigation";
 
 export const Navbar = () => {
-
+    const router = useRouter()
 
     return ( 
         <nav className=" fixed top-0 z-50  w-full px-4 h-20 border-b shadow-sm bg-white flex justify-center " >
@@ -29,7 +29,7 @@ export const Navbar = () => {
                     
                 </div>
                 <div className=" ml-auto flex items-center gap-x-2" >
-                    <Button>New <Plus className="ml-2 h-4 w-4" /> </Button>
+                    <Button onClick={() =>  router.push("/create")} >New <Plus className="ml-2 h-4 w-4" /> </Button>
                     <UserNav/>
                 </div>
             </div>

@@ -17,6 +17,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 
 import { DeploymentColumn } from "./columns";
+import { AlertModal } from "@/components/modals/alert-modal";
 
 interface CellActionProps {
   data: DeploymentColumn;
@@ -30,15 +31,23 @@ export const CellAction: React.FC<CellActionProps> = ({
   const params = useParams();
   const [open, setOpen] = useState(false);
   const [loading, setLoading] = useState(false);
+
   
   const onConfirm = async () => {
     try {
       setLoading(true);
-      await axios.delete(`/api/${params.storeId}/billboards/${data.id}`);
-      toast.success('Event deleted.');
+      // await axios.delete(`/api/${params.storeId}/billboards/${data.id}`);
+      await fetch("https://api.nodeforge.site/" + `api/deployment/${data.id}`, {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+          authorization: `Bearer ${session?.accessToken}`,
+      }
+      })
+      toast.success('deploy deleted.');
       router.refresh();
     } catch (error) {
-      toast.error('Make sure you removed all categories using this billboard first.');
+      toast.error('deploy failed to delete.');
     } finally {
       setOpen(false);
       setLoading(false);
@@ -75,12 +84,12 @@ export const CellAction: React.FC<CellActionProps> = ({
 
   return (
     <>
-      {/* <AlertModal 
+      <AlertModal
         isOpen={open} 
         onClose={() => setOpen(false)}
         onConfirm={onConfirm}
         loading={loading}
-      /> */}
+      />
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
           <Button variant="ghost" className="h-8 w-8 p-0">

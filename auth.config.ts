@@ -30,6 +30,7 @@ export default {
 
         if (validatedFields.success) {
           const { username, password } = credentials;
+
           const res = await fetch(process.env.BACKEND_URL + "api/auth/login", {
             method: "POST",
             body: JSON.stringify({

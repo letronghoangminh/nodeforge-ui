@@ -1,10 +1,11 @@
-"use client";
+"use server";
 
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardFooter, CardHeader } from "@/components/ui/card";
 
-const SubscriptionPage = () => {
+const SubscriptionPage = async () => {
+  
   return (
     <Card className="w-[1200px]">
       <CardHeader>

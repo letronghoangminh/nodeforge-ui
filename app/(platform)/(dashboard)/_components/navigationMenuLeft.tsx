@@ -32,9 +32,9 @@ export function NavigationMenuLeft() {
           </Link>
         </NavigationMenuItem>
         <NavigationMenuItem>
-          <Link href="/envs" legacyBehavior passHref>
+          <Link href="/create" legacyBehavior passHref>
             <NavigationMenuLink className={navigationMenuTriggerStyle()}>
-              Envs Groups
+              Integration
             </NavigationMenuLink>
           </Link>
         </NavigationMenuItem>

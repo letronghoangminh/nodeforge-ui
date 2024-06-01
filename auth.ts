@@ -19,13 +19,12 @@ export const {
     async signIn({ user, account }) {
       if (account?.provider !== "credentials") return true;
 
-      const existingUser = jwtDecode(user?.accessToken || "") as any;
+      // const existingUser = jwtDecode(user?.accessToken || "") as any;
+      // if (!existingUser || !existingUser.isVerified) {
+      //   return false;
+      // }
 
-      if (!existingUser || !existingUser.isVerified) {
-        return false;
-      }
-
-    return true;
+      return true;
     },
     async jwt({ token, user }) {
       if (user) return { ...token, ...user };
