@@ -5,6 +5,7 @@ import { DeploymentColumn } from "./_components/columns";
 import { headers } from "next/headers";
 import UseGetDeployment from "@/actions/getDeployments";
 import { auth } from "@/auth";
+import toast from "react-hot-toast";
 
 
 async function getData() {
@@ -17,7 +18,7 @@ async function getData() {
         }
     })
     if (!res.ok) {
-      throw new Error('Failed to fetch data')
+      console.log(res.statusText)
     }
    
     return res.json()

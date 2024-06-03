@@ -2,7 +2,7 @@
 
 import axios from "axios";
 import { useState } from "react";
-import { Copy, Edit, MoreHorizontal, Trash } from "lucide-react";
+import { Copy, Edit, Info, MoreHorizontal, Trash } from "lucide-react";
 import { toast } from "react-hot-toast";
 import { useParams, useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
@@ -59,27 +59,8 @@ export const CellAction: React.FC<CellActionProps> = ({
     toast.success('Billboard ID copied to clipboard.');
   }
 
-  const onPublish = async (id: number) => {
-    console.log(id);
-    if(status === "loading") return;
-    try {
-      setLoading(true);
-      await fetch("http://localhost:3001/"+`event/public`, {
-        method: "POST",
-        body: JSON.stringify({
-          id: +id
-        }),
-        headers: {
-          "Content-Type": "application/json",
-          "Authorization": `Bearer ${session?.accessToken}`
-        },
-      });
-      // router.refresh();
-    } catch (error) {
-      toast.error('Failed to publish billboard.');
-    } finally {
-      setLoading(false);
-    }
+  const redirectDetail = async (id: number) => {
+    router.push(`/deployment/${id}`);
   };
 
   return (
@@ -105,15 +86,15 @@ export const CellAction: React.FC<CellActionProps> = ({
             <Copy className="mr-2 h-4 w-4" /> Copy Id
           </DropdownMenuItem>
           <DropdownMenuItem
-            onClick={() => onPublish(+data.id)}
+            onClick={() => redirectDetail(+data.id)}
           >
-            <Copy className="mr-2 h-4 w-4" /> Publish Event
+            <Info className="mr-2 h-4 w-4" /> More Info
           </DropdownMenuItem>
-          <DropdownMenuItem
+          {/* <DropdownMenuItem
             onClick={() => router.push(`/event/${data.id}`) } 
           >
             <Edit className="mr-2 h-4 w-4" /> Update
-          </DropdownMenuItem>
+          </DropdownMenuItem> */}
           <DropdownMenuItem
             onClick={() => setOpen(true)}
           >
