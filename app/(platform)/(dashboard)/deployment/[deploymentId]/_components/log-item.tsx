@@ -15,7 +15,7 @@ export const LogItem = ({
     return(
         <li className="flex items-center gap-x-2 w-full" >
             <div className="flex space-y-0.5 justify-between w-full" >
-                <p className=" text-lg text-muted-foreground" >
+                <p className="text-lg text-muted-foreground" >
                     {data.message}
                 </p>
 
