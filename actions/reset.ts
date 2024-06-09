@@ -13,7 +13,7 @@ export const reset = async (values: z.infer<typeof ResetSchema>) => {
   const { email } = validatedFields.data;
 
   const res = await fetch(
-    process.env.BACKEND_URL + "api/auth/request-reset-password",
+    "https://api.nodeforge.site/" + "api/auth/request-reset-password",
     {
       method: "POST",
       body: JSON.stringify({
@@ -31,7 +31,7 @@ export const reset = async (values: z.infer<typeof ResetSchema>) => {
 
   //   const token = await res.json();
 
-  //   await fetch(process.env.BACKEND_URL + "api/auth/reset-password", {
+  //   await fetch("https://api.nodeforge.site/" + "api/auth/reset-password", {
   //     method: "POST",
   //     body: JSON.stringify({
   //       email,

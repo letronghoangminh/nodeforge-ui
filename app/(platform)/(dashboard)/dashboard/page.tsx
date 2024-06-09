@@ -11,7 +11,7 @@ import toast from "react-hot-toast";
 async function getData() {
     const session = await auth();
 
-    const res = await fetch( process.env.BACKEND_URL + `api/deployment`, {
+    const res = await fetch("https://api.nodeforge.site/" + `api/deployment`, {
         headers: {
             "Content-Type": "application/json",
             "Authorization": `Bearer ${session?.accessToken}`

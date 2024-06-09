@@ -18,7 +18,7 @@ const RepositoryView = ({ data }: RepositoryProps) => {
     <div className="w-full h-full flex flex-col gap-1">
       <div className="text-xl font-semibold text-gray-700">Repository</div>
       <div className="flex-1 md:grid md:grid-cols-2 gap-4">
-        <div className="flex flex-col gap-2">
+        {/* <div className="flex flex-col gap-2">
           <div className=" text-sm font-semibold text-gray-500">ID</div>
           <div onClick={() => onCopy(data.id)} className="flex items-center">
             <Copy className="mr-2 h-4 w-4" />{" "}
@@ -26,7 +26,7 @@ const RepositoryView = ({ data }: RepositoryProps) => {
               {data?.id}
             </span>{" "}
           </div>
-        </div>
+        </div> */}
         <div className="flex flex-col gap-2">
           <div className=" text-sm font-semibold text-gray-500">NAME</div>
           <div onClick={() => onCopy(data.id)} className="flex items-center">

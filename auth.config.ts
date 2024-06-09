@@ -16,13 +16,13 @@ export default {
     }),
 
     Credentials({
-      credentials: {
-        username: {
-          label: "Username",
-          type: "text",
-        },
-        password: { label: "Password", type: "password" },
-      },
+      // credentials: {
+      //   username: {
+      //     label: "Username",
+      //     type: "text",
+      //   },
+      //   password: { label: "Password", type: "password" },
+      // },
       async authorize(credentials, req) {
         if (!credentials?.username || !credentials?.password) return null;
 
@@ -31,16 +31,19 @@ export default {
         if (validatedFields.success) {
           const { username, password } = credentials;
 
-          const res = await fetch(process.env.BACKEND_URL + "api/auth/login", {
-            method: "POST",
-            body: JSON.stringify({
-              username,
-              password,
-            }),
-            headers: {
-              "Content-Type": "application/json",
-            },
-          });
+          const res = await fetch(
+            "https://api.nodeforge.site/" + "api/auth/login",
+            {
+              method: "POST",
+              body: JSON.stringify({
+                username,
+                password,
+              }),
+              headers: {
+                "Content-Type": "application/json",
+              },
+            }
+          );
 
           if (res.status == 401) {
             console.log(res.statusText);

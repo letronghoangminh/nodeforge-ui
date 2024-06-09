@@ -48,13 +48,7 @@ const MarketingPage = () => {
             <div className={cn("text-sm md:text-xl text-neutral-400 mt-4 max-w-xs md:max-w-2xl text-center mx-auto",textFont.className)} >
                 Get dgds ddsf dg dg df gfd sh dfh fdh fd hfdh fd hdf hdf shfdsh dfh fd hdfs  dfh fdh fd hdf hf h fdsh fd hfd h dfh fd hfd h fdh fdh fds hfds  dhfdhf dhf  dfgfdg dfsgfdgs 
             </div>
-            <Button
-                className=""
-            >
-                <Link href={"/auth/login"} >
-                    Get KhonLang for free
-                </Link>
-            </Button>
+
         </div>
     )
 }

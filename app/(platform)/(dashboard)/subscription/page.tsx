@@ -29,11 +29,11 @@ const SubscriptionPage = async () => {
       </CardContent>
       <CardFooter>
         <div className="flex justify-end w-full gap-4">
-          <Button type="button" variant={"destructive"} >
+          <Button type="button" variant={"green"} >
             Upgrade Plan
           </Button>
           <Button>
-            Manager Plan
+            Manage Plan
           </Button>
         </div>
       </CardFooter>

@@ -11,9 +11,9 @@ export const Navbar = () => {
                 <Button size={"sm"} variant={"outline"} asChild >
                     <Link href={"/auth/login"} >Login</Link>
                 </Button>
-                <Button size={"sm"} asChild >
+                {/* <Button size={"sm"} asChild >
                     <Link href={"/auth/login"}>Get Khonlang for free</Link>
-                </Button>
+                </Button> */}
             </div>
         </div>
     </div>

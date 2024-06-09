@@ -11,11 +11,13 @@ export const NewVerificationForm = () => {
   const [error, setError] = useState<string | undefined>("");
   const [success, setSuccess] = useState<string | undefined>("");
   const searchParams = useSearchParams();
+
   const token = searchParams.get("token");
+
   const { data: session, status } = useSession();
 
   const newVerification = useCallback(async (token: string) => {
-    await fetch(process.env.BACKEND_URL + "api/auth/verify" + `?token=${token}`,
+    const res = await fetch("https://api.nodeforge.site/" + "/api/auth/verify"+ `?token=${token}`,
       {
         method: "GET",
         headers: {

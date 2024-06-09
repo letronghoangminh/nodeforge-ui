@@ -14,7 +14,7 @@ export const login = async (values: z.infer<typeof LoginSchema>) => {
   const { username, password } = validatedFields.data;
 
   const res = await fetch(
-    process.env.BACKEND_URL + `api/users/info/${username}`,
+    "https://api.nodeforge.site/" + `api/users/info/${username}`,
     {
       method: "GET",
       headers: {
@@ -34,7 +34,7 @@ export const login = async (values: z.infer<typeof LoginSchema>) => {
 
   if (!existingUser.isVerified) {
     try {
-      await fetch(process.env.BACKEND_URL + `api/users/verify`, {
+      await fetch("https://api.nodeforge.site/" + `api/users/verify`, {
         method: "POST",
         body: JSON.stringify({
           username: username,

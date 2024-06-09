@@ -56,12 +56,9 @@ export const CellAction: React.FC<CellActionProps> = ({
 
   const onCopy = (id: string) => {
     navigator.clipboard.writeText(id);
-    toast.success('Billboard ID copied to clipboard.');
+    toast.success('copied to clipboard.');
   }
 
-  const redirectDetail = async (id: number) => {
-    router.push(`/deployment/${id}`);
-  };
 
   return (
     <>
@@ -81,15 +78,15 @@ export const CellAction: React.FC<CellActionProps> = ({
         <DropdownMenuContent align="end">
           <DropdownMenuLabel>Actions</DropdownMenuLabel>
           <DropdownMenuItem
-            onClick={() => onCopy(data.id)}
+            onClick={() => onCopy(`https://github.com/letronghoangminh/${data.repository}.git`)}
           >
-            <Copy className="mr-2 h-4 w-4" /> Copy Id
+            <Copy className="mr-2 h-4 w-4" /> Copy Repository
           </DropdownMenuItem>
-          <DropdownMenuItem
+          {/* <DropdownMenuItem
             onClick={() => redirectDetail(+data.id)}
           >
             <Info className="mr-2 h-4 w-4" /> More Info
-          </DropdownMenuItem>
+          </DropdownMenuItem> */}
           {/* <DropdownMenuItem
             onClick={() => router.push(`/event/${data.id}`) } 
           >

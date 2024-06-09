@@ -1,13 +1,12 @@
 "use client";
 import { BeatLoader } from "react-spinners";
-import { useSearchParams } from "next/navigation";
-import { useCallback, useEffect, useState } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
+import { use, useCallback, useEffect, useState } from "react";
 import { useSession } from "next-auth/react";
 import { CardWrapper } from "@/components/auth/card-wrapper";
 import { FormSuccess } from "@/components/form-success";
 import { FormError } from "@/components/form-error";
-import axios from "axios";
-import { headers } from "next/headers";
+
 
 export const NewVerificationForm = () => {
   const [error, setError] = useState<string | undefined>("");
@@ -15,9 +14,10 @@ export const NewVerificationForm = () => {
   const searchParams = useSearchParams();
   const installation_id = searchParams.get("installation_id");
   const { data: session, status } = useSession();
+  const router = useRouter();
 
   const newVerification = useCallback(async (installation_id: number) => {
-    await fetch("https://api.nodeforge.site/" + "api/github/profile",
+    const res = await fetch("https://api.nodeforge.site/" + "api/github/profile",
       {
         body: JSON.stringify({ installationId: +installation_id }),
         method: "POST",
@@ -27,6 +27,10 @@ export const NewVerificationForm = () => {
         },
       }
     );
+    if(res.ok) {
+      return { success: "Verification sent!" };
+    }
+    return { error: "Something went wrong!" };
   }, [session])
 
 
@@ -43,18 +47,28 @@ export const NewVerificationForm = () => {
     }
     newVerification(+installation_id)
       .then((data: any) => {
-        console.log("data",data);
         setError(data?.error);
         setSuccess(data?.success);
+        if(data?.success) {
+        }
       })
       .catch(() => {
         setError("Something went wrong!");
       });
-  }, [installation_id, status, newVerification, success, error]);
+  }, [installation_id, status, newVerification, success, error, router]);
 
   useEffect(() => {
     onSubmit();
   }, [onSubmit]);
+
+  console.log("success", success);
+
+
+  useEffect(() => {
+    if (success) {
+      router.push("/select-repo");
+    }
+  },[success, router]);
 
   return (
     <CardWrapper

@@ -21,19 +21,23 @@ import {
 } from "@/components/ui/table"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
+import { useRouter } from "next/navigation"
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[]
   data: TData[],
   searchKey: string;
+  isDeployment: boolean;
 }
 
 export function DataTable<TData, TValue>({
   columns,
   data,
   searchKey,
+  isDeployment
 }: DataTableProps<TData, TValue>) {
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
+  const [isLoading, setIsLoading] = useState(false);
   const table = useReactTable({
     data,
     columns,
@@ -45,6 +49,10 @@ export function DataTable<TData, TValue>({
       columnFilters,
     }
   });
+  const router = useRouter();
+
+
+
 
   return (
     <div>
@@ -83,6 +91,7 @@ export function DataTable<TData, TValue>({
               table.getRowModel().rows.map((row) => (
                 <TableRow
                   key={row.id}
+                  className="cursor-pointer hover:bg-gray-100"
                   data-state={row.getIsSelected() && "selected"}
                 >
                   {row.getVisibleCells().map((cell) => (

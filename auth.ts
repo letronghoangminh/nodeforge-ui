@@ -1,7 +1,26 @@
 import NextAuth, { DefaultSession } from "next-auth";
 import authConfig from "@/auth.config";
 import { jwtDecode } from "jwt-decode";
+import { JWT } from "next-auth/jwt";
 
+async function refreshToken(token: JWT): Promise<JWT> {
+  const res = await fetch("https://api.nodeforge.site/" + "api/auth/refresh", {
+    method: "POST",
+    body: JSON.stringify({
+      refreshToken: token.refreshToken,
+    }),
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
+
+  const response = await res.json();
+
+  return {
+    ...token,
+    ...response,
+  };
+}
 export const {
   handlers: { GET, POST },
   auth,
@@ -28,6 +47,11 @@ export const {
     },
     async jwt({ token, user }) {
       if (user) return { ...token, ...user };
+
+      const currentTime = Math.floor(Date.now() / 1000);
+      if (currentTime < jwtDecode(token.accessToken).exp!) return token;
+
+      return await refreshToken(token);
       return token;
     },
     async session({ token, session }) {

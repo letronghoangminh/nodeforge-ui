@@ -20,11 +20,12 @@ export const DeploymentClient: React.FC<DeploymentClientProps> = ({
   const params = useParams();
   const router = useRouter();
 
+
   return (
     <> 
       <div className="flex items-center justify-between ">
         <Heading title={`Dashboard`} description={`Number of deployment ${data?.length}`} />
-        <Button onClick={() => router.push(`/subscription/add`)}>
+        <Button onClick={() => router.push(`/connect-github`)}>
           <Plus className="mr-2 h-4 w-4" /> Add New
         </Button>
       </div>

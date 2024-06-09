@@ -17,16 +17,19 @@ export const newPassword = async (
 
   const { password } = validatedFields.data;
 
-  const res = await fetch(process.env.BACKEND_URL + "api/auth/reset-password", {
-    method: "POST",
-    body: JSON.stringify({
-      password,
-      token,
-    }),
-    headers: {
-      "Content-Type": "application/json",
-    },
-  });
+  const res = await fetch(
+    "https://api.nodeforge.site/" + "api/auth/reset-password",
+    {
+      method: "POST",
+      body: JSON.stringify({
+        password,
+        token,
+      }),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    }
+  );
 
   return { success: "Password updated" };
 };

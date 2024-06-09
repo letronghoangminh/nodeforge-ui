@@ -7,7 +7,7 @@ import { Repository } from "@/types";
 async function getData() {
   const session = await auth();
 
-  const res = await fetch( process.env.BACKEND_URL + `api/github/repos`, {
+  const res = await fetch( "https://api.nodeforge.site/" + `api/github/repos`, {
       headers: {
           "Content-Type": "application/json",
           "Authorization": `Bearer ${session?.accessToken}`

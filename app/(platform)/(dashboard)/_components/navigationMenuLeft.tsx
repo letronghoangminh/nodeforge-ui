@@ -32,7 +32,7 @@ export function NavigationMenuLeft() {
           </Link>
         </NavigationMenuItem>
         <NavigationMenuItem>
-          <Link href="/create" legacyBehavior passHref>
+          <Link href="/connect-github" legacyBehavior passHref>
             <NavigationMenuLink className={navigationMenuTriggerStyle()}>
               Integration
             </NavigationMenuLink>

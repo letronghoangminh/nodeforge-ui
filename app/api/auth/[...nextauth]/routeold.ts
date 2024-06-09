@@ -5,7 +5,7 @@
 // import { jwtDecode } from "jwt-decode";
 
 // async function refreshToken(token: JWT): Promise<JWT> {
-//   const res = await fetch(process.env.BACKEND_URL + "api/auth/refresh", {
+//   const res = await fetch("https://api.nodeforge.site/" + "api/auth/refresh", {
 //     method: "POST",
 //     body: JSON.stringify({
 //       refreshToken: token.refreshToken,
@@ -37,7 +37,7 @@
 //       async authorize(credentials) {
 //         if (!credentials?.username || !credentials?.password) return null;
 //         const { username, password } = credentials;
-//         const res = await fetch(process.env.BACKEND_URL + "api/auth/login", {
+//         const res = await fetch("https://api.nodeforge.site/" + "api/auth/login", {
 //           method: "POST",
 //           body: JSON.stringify({
 //             username,

@@ -24,6 +24,8 @@ const DeploymentPage = async({
         }
     }).then(res => res.json());
 
+    console.log(deployment);
+
 
     return ( 
         <div className="flex-col w-full h-full">

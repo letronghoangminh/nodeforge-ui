@@ -54,6 +54,13 @@ export type NewDeploymentFrontEnd = {
   envVars: Record<string, string>;
 };
 
+export type ProfileType = {
+  id: number;
+  email: string;
+  role: Role;
+  phoneNumber: string;
+};
+
 export type NewDeploymentBackEnd = {
   type: "BACKEND";
   framework: "NESTJS";

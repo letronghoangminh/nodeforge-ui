@@ -110,7 +110,6 @@ const NewForm = () => {
     newEnvVarFields.map((envVar) => {
       if (envVar.key) object[envVar.key] = envVar.value;
     });
-    console.log(object);
     form.setValue("envVars", object);
   };
 
@@ -142,6 +141,7 @@ const NewForm = () => {
         });
         if(!res.ok){
           toast.error("Something went wrong")
+          return;
         }
         toast.success("Deployment created successfully")
         router.push(`/dashboard`);

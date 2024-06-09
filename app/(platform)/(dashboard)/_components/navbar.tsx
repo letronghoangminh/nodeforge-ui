@@ -29,7 +29,7 @@ export const Navbar = () => {
                     
                 </div>
                 <div className=" ml-auto flex items-center gap-x-2" >
-                    <Button onClick={() =>  router.push("/create")} >New <Plus className="ml-2 h-4 w-4" /> </Button>
+                    <Button onClick={() =>  router.push("/connect-github")} >New <Plus className="ml-2 h-4 w-4" /> </Button>
                     <UserNav/>
                 </div>
             </div>
