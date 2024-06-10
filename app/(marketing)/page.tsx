@@ -36,19 +36,15 @@ const MarketingPage = () => {
                     className="mb-4 flex items-center border shadow-sm p-4 bg-amber-100 text-amber-700 uppercase rounded-full"
                 >
                     <Medal className="h-6 w-6 mr-2" />
-                    No 1 no Platform
+                    Platform as a service
                 </div>
                 <h1 className="text-3xl md:text-6xl text-center text-neutral-800 mb-6" >
-                    KhonLang helps team dev move
+                    Nodeforge helps team dev move
                 </h1>
                 <div className="text-3xl md:text-6xl bg-gradient-to-r from-fuchsia-600 to-pink-600 text-white px-4 p-2 rounded-md pb-4 w-fit" >
-                    work forward.
+                    forward.
                 </div>
             </div>
-            <div className={cn("text-sm md:text-xl text-neutral-400 mt-4 max-w-xs md:max-w-2xl text-center mx-auto",textFont.className)} >
-                Get dgds ddsf dg dg df gfd sh dfh fdh fd hfdh fd hdf hdf shfdsh dfh fd hdfs  dfh fdh fd hdf hf h fdsh fd hfd h dfh fd hfd h fdh fdh fds hfds  dhfdhf dhf  dfgfdg dfsgfdgs 
-            </div>
-
         </div>
     )
 }

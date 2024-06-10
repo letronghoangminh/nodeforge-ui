@@ -23,7 +23,7 @@ export const Logo = () => {
                     width={30}
                 />
                 <p className={cn("text-lg text-neutral-700 pb-1", headingFont.className)} >
-                    Khon lang
+                    Nodeforge
                 </p>
             </div>
         </Link>

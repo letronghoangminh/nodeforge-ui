@@ -1,4 +1,4 @@
 export const siteConfig = {
-  name: "Khon lang",
+  name: "Nodeforge",
   description: "con Arsenal gap bo Bayer",
 };
