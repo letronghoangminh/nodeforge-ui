@@ -26,6 +26,7 @@ export const NewVerificationForm = () => {
         },
       }
     );
+    return res.json();
   }, [session])
 
 

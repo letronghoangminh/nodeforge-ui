@@ -1,6 +1,4 @@
-"use server";
-import { auth } from "@/auth";
-import { Button } from "@/components/ui/button";
+"use client";
 import {
   Card,
   CardContent,
@@ -9,16 +7,16 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { SelectSeparator } from "@/components/ui/select";
-import { Separator } from "@/components/ui/separator";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { cn } from "@/lib/utils";
 import { LogItem } from "./log-item";
 import EnvironmentForm from "./environment-form";
 import Metrics from "./metrics";
+import { useQuery } from "@tanstack/react-query";
+import { useSession } from "next-auth/react";
+import { Skeleton } from "@/components/ui/skeleton";
 
 
 interface TabsDeploymentProps {
@@ -26,55 +24,79 @@ interface TabsDeploymentProps {
   deploymentId: string;
 }
 
-const TabsDeployment = async ({ type, deploymentId }: TabsDeploymentProps) => {
-  const session = await auth();
+const TabsDeployment = ({ type, deploymentId }: TabsDeploymentProps) => {
+  const { data: session, status } = useSession();
 
-  let metrics: {
-    cpu: number;
-    memory: number;
-  } = {
-    cpu: 13.3,
-    memory: 17.1,
-  };
 
-  const logs = await fetch(
-    `https://api.nodeforge.site/api/deployment/${deploymentId}/logs`,
-    {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-        authorization: `Bearer ${session?.accessToken}`,
-      },
-    }
-  ).then((res) => res.json());
 
-  const environment = await fetch(
-    `https://api.nodeforge.site/api/deployment/${deploymentId}/environment`,
-    {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-        authorization: `Bearer ${session?.accessToken}`,
-      },
-    }
-  ).then((res) => res.json());
+  
 
-  if (type === "BACKEND") {
-    metrics = await fetch(
-      `https://api.nodeforge.site/api/deployment/${deploymentId}/metrics`,
-      {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-          authorization: `Bearer ${session?.accessToken}`,
-        },
-      }
-    ).then((res) => res.json());
+  let metrics:any = []
+
+  const {data: logs} = useQuery<{timestamp: string, message: string}[]>({
+    queryKey: ["logs", deploymentId],
+    queryFn: () =>  fetch(
+        `https://api.nodeforge.site/api/deployment/${deploymentId}/logs`,
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            authorization: `Bearer ${session?.accessToken}`,
+          },
+        }
+      ).then((res) => res.json()),
+    enabled: status === "authenticated"
+  });
+
+  console.log(logs)
+
+  const {data: environment} = useQuery<any[]>({
+    queryKey: ["environment", deploymentId],
+    queryFn: async () => {
+      const environment = await fetch(
+        `https://api.nodeforge.site/api/deployment/${deploymentId}/environment`,
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            authorization: `Bearer ${session?.accessToken}`,
+          },
+        }
+      ).then((res) => res.json());
+      return environment
+    },
+    enabled: status === "authenticated"
+  });
+
+  const {data: dataMetrics} = useQuery<{cpu: number, memory: number}[]>({
+    queryKey: ["metrics", deploymentId],
+    queryFn: async () => {
+      const metrics = await fetch(
+        `https://api.nodeforge.site/api/deployment/${deploymentId}/metrics`,
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            authorization: `Bearer ${session?.accessToken}`,
+          },
+        }
+      ).then((res) => res.json());
+      return metrics
+    },
+    enabled: type === "BACKEND" && status === "authenticated" 
+  });
+
+
+
+
+  if(status === "loading") {
+    return (
+      <div className="w-[1200px] flex flex-col gap-4" >
+        <Skeleton  className=" w-full h-[40px]" />
+        <Skeleton  className=" w-full h-[150px]" />
+      </div>
+    )
   }
-
-  console.log("metrics", metrics);
-  console.log("logs", logs);
-  console.log("environment", environment);
 
   return (
     <Tabs
@@ -104,7 +126,7 @@ const TabsDeployment = async ({ type, deploymentId }: TabsDeploymentProps) => {
           </CardHeader>
           <CardContent className="space-y-2">
             <div className="flex justify-around">
-                <Metrics data={metrics} />
+                <Metrics data={metrics || []} />
             </div>
           </CardContent>
         </Card>
@@ -118,7 +140,7 @@ const TabsDeployment = async ({ type, deploymentId }: TabsDeploymentProps) => {
           <CardContent className="space-y-2">
             <ScrollArea className="h-72 w-full rounded-md border">
               <div className="p-4">
-                {logs.map((log: {
+                {(logs || []).map((log: {
                     timestamp: string;
                     message: string;
                 }) => (
@@ -142,7 +164,7 @@ const TabsDeployment = async ({ type, deploymentId }: TabsDeploymentProps) => {
             </CardDescription>
           </CardHeader>
           <CardContent className="space-y-2">
-            <EnvironmentForm data={environment} />
+            <EnvironmentForm data={environment || []} />
           </CardContent>
         </Card>
       </TabsContent>

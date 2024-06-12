@@ -24,7 +24,6 @@ const DeploymentPage = async({
         }
     }).then(res => res.json());
 
-    console.log(deployment);
 
 
     return ( 

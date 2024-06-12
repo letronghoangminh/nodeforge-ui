@@ -27,6 +27,8 @@ import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
 import * as z from "zod";
 import { useSession } from "next-auth/react";
+import { useQuery } from "@tanstack/react-query";
+
 
 
 const formSchema = z.object({
@@ -55,12 +57,28 @@ type DeploymentFormValues = z.infer<typeof formSchema>;
 
 
 const NewForm = () => {
+
   const { item: dataStore } = useRepository();
   const [loading, setLoading] = useState(false);
   const [envVarFields, setEnvVarFields] = useState([{ key: "", value: "" }]);
   const [type, setType] = useState<"BACKEND"| "FRONTEND">("FRONTEND");
   const router = useRouter();
   const { data: session, status } = useSession();
+
+  const {data: dataBranch} = useQuery<{name: string}[]>({
+    queryKey: ["branch", dataStore.name, dataStore.ownerName],
+    queryFn: () => fetch("https://api.nodeforge.site/" + `/api/github/branches?repository=${dataStore.name}&owner=${dataStore.ownerName}`,
+
+    {
+      headers: {
+        authorization: `Bearer ${session?.accessToken}`,
+        "Content-Type": "application/json",
+      },
+    }
+    ).then((res) => res.json()),
+});
+
+  console.log(dataBranch)
 
   const defaultValues: NewDeploymentStatic =
   type === "FRONTEND"
@@ -130,7 +148,19 @@ const NewForm = () => {
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     try{
-        console.log(values)
+
+        const checkSubdomain = await fetch("https://api.nodeforge.site" + `/api/deployment/check-subdomain?subdomain=${values.subdomain}`, {
+            headers: {
+                "Content-Type": "application/json",
+                authorization: `Bearer ${session?.accessToken}`,
+            }
+        });
+
+        if(!checkSubdomain.ok){
+            toast.error("Subdomain already exists")
+            return;
+        }
+
         const res = await fetch("https://api.nodeforge.site/" + "api/deployment", {
             method: "POST",
             body: JSON.stringify(values),
@@ -304,12 +334,21 @@ const NewForm = () => {
                           </SelectTrigger>
                         </FormControl>
                         <SelectContent>
-                          <SelectItem value="NEXT">NEXT</SelectItem>
-                          <SelectItem value="VUE">VUE</SelectItem>
-                          <SelectItem value="REACT">REACT</SelectItem>
-                          <SelectItem value="ANGULAR">ANGULAR</SelectItem>
-                          <SelectItem value="SVELTE">SVELTE</SelectItem>
-                          <SelectItem value="NUXT">NUXT</SelectItem>
+                          {type === "FRONTEND" ? 
+                            <>
+                              <SelectItem value="NEXT">NEXT</SelectItem>
+                              <SelectItem value="VUE">VUE</SelectItem>
+                              <SelectItem value="REACT">REACT</SelectItem>
+                              <SelectItem value="ANGULAR">ANGULAR</SelectItem>
+                              <SelectItem value="SVELTE">SVELTE</SelectItem>
+                              <SelectItem value="NUXT">NUXT</SelectItem>
+                            </>
+                            :
+                            <>
+                              <SelectItem value="NESTJS">NESTJS</SelectItem>
+                              <SelectItem value="EXPRESS">EXPRESS</SelectItem>
+                            </>
+                          }
                           <SelectItem value="OTHER">OTHER</SelectItem>
                         </SelectContent>
                       </Select>
@@ -366,8 +405,11 @@ const NewForm = () => {
                           </SelectTrigger>
                         </FormControl>
                         <SelectContent>
-                          <SelectItem value="main">main</SelectItem>
-                          <SelectItem value="dev">dev</SelectItem>
+                          {dataBranch && dataBranch.length > 0 && dataBranch?.map((branch) => (
+                            <SelectItem key={branch.name} value={branch.name}>
+                              {branch.name}
+                            </SelectItem>
+                          ))}
                         </SelectContent>
                       </Select>
                     </FormControl>
