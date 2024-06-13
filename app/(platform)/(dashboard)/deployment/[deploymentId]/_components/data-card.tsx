@@ -1,3 +1,4 @@
+"use client";
 import { Deployment } from "@/types";
 import {
   Card,
@@ -8,20 +9,54 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
-import { CheckCircle, Copy, Pause, XCircle } from "lucide-react";
+import { CheckCircle, Copy, Loader2, Pause, XCircle } from "lucide-react";
 import RepositoryView from "./repository";
-import AmplifyConfigurationView from "./amplifyConfiguretion";
 import toast from "react-hot-toast";
+import { useQuery } from "@tanstack/react-query";
+import { useSession } from "next-auth/react";
+import { useMemo } from "react";
 interface DataCardProps {
   data: Deployment;
 }
 
 const DataCard = ({ data }: DataCardProps) => {
+  const { data: session, status } = useSession();
 
   const onCopy = (id: string) => {
     navigator.clipboard.writeText(id);
-    toast.success('copied to clipboard.');
-  }
+    toast.success("copied to clipboard.");
+  };
+
+  const { data: checkData } = useQuery<{ status: number, data: any }>({
+    queryKey: ["WEBSITE_STATUS"],
+    queryFn: async () => {
+      const response = await fetch(
+        `https://${data.amplifyConfiguration?.subdomain}.nodeforge.site`,
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            authorization: `Bearer ${session?.accessToken}`,
+          },
+        }
+      )
+      return {
+        status: response.status,
+        data: await response.json(),
+      };
+    },
+    refetchInterval: 10 * 1000,
+  });
+
+  const websiteStatus = useMemo(() => {
+    if(!checkData){
+      return "INACTIVE"
+    }
+    if(checkData?.status >= 200 && checkData?.status < 300 ){
+      return "ACTIVE"
+    }
+    return "INACTIVE"
+  }, [checkData])
 
   return (
     <Card className="w-[1200px]">
@@ -33,13 +68,18 @@ const DataCard = ({ data }: DataCardProps) => {
         <div className="md:grid md:grid-cols-4 gap-8 pt-5">
           <div className="flex flex-col gap-2">
             <div className=" text-xl font-semibold text-gray-500">ID</div>
-            <div onClick={() => onCopy(data.id)} className="flex items-center">
+            <div
+              onClick={() => onCopy(data.id.toString())}
+              className="flex items-center"
+            >
               <Copy className="mr-2 h-4 w-4" />{" "}
               <span className=" text-lg font-medium text-black">{data.id}</span>{" "}
             </div>
           </div>
           <div className="flex flex-col gap-2">
-            <div className=" text-xl font-semibold text-gray-500">DEPLOYMENT STATUS</div>
+            <div className=" text-xl font-semibold text-gray-500">
+              DEPLOYMENT STATUS
+            </div>
             <div className="flex items-center">
               {data.status === "SUCCESS" ? (
                 <CheckCircle className="mr-2 h-4 w-4 text-emerald-400" />
@@ -54,17 +94,17 @@ const DataCard = ({ data }: DataCardProps) => {
             </div>
           </div>
           <div className="flex flex-col gap-2">
-            <div className=" text-xl font-semibold text-gray-500">WEBSITE STATUS</div>
+            <div className=" text-xl font-semibold text-gray-500">
+              WEBSITE STATUS
+            </div>
             <div className="flex items-center">
-              {data.status === "SUCCESS" ? (
+              {websiteStatus === "ACTIVE" ? (
                 <CheckCircle className="mr-2 h-4 w-4 text-emerald-400" />
-              ) : data.status === "PENDING" ? (
-                <Pause className="mr-2 h-4 w-4 text-yellow-400" />
               ) : (
-                <XCircle className="mr-2 h-4 w-4 text-red-400" />
+                <Loader2 className="w-6 h-6 text-sky-700 animate-spin" />
               )}
               <span className=" text-lg font-medium text-emerald-400">
-                {data.status}
+                {websiteStatus}
               </span>{" "}
             </div>
           </div>
@@ -81,7 +121,14 @@ const DataCard = ({ data }: DataCardProps) => {
           <div className="flex flex-col gap-2">
             <div className=" text-xl font-semibold text-gray-500">DOMAIN</div>
             <div className="flex items-center">
-              <span onClick={() => onCopy(`https://${data.amplifyConfiguration?.subdomain}.nodeforge.site`)} className=" text-xs font-medium text-black flex ">
+              <span
+                onClick={() =>
+                  onCopy(
+                    `https://${data.amplifyConfiguration?.subdomain}.nodeforge.site`
+                  )
+                }
+                className=" text-xs font-medium text-black flex "
+              >
                 <Copy className="mr-2 h-4 w-4" />{" "}
                 {`https://${data.amplifyConfiguration?.subdomain}.nodeforge.site`}
               </span>{" "}
@@ -90,9 +137,9 @@ const DataCard = ({ data }: DataCardProps) => {
         </div>
         <Separator className="mt-6" />
         <div className="flex py-6 space-x-4 text-sm h-full">
-            <RepositoryView data={data.repository} />
-            <Separator role={"grid"} orientation="vertical" className=" h-56" />
-            {/* <AmplifyConfigurationView data={data.amplifyConfiguration} /> */}
+          <RepositoryView data={data.repository} />
+          <Separator role={"grid"} orientation="vertical" className=" h-56" />
+          {/* <AmplifyConfigurationView data={data.amplifyConfiguration} /> */}
         </div>
       </CardContent>
     </Card>

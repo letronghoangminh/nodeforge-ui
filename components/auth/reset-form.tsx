@@ -44,7 +44,6 @@ export const ResetForm = () => {
         setError(data?.error);
 
         setSuccess(data?.success);
-        // router.push("/dashboard");
       });
     });
   };

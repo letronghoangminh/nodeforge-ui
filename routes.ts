@@ -20,6 +20,13 @@ export const authRoutes = [
 ];
 
 /**
+ * An array of routes that are used for authentication
+ * These routes will redirect logged in users to /settings
+ * @type{string[]}
+ */
+export const adminRoutes = ["/users", "/users/deployments"];
+
+/**
  * The prefix for the api routes
  * Routes that start with this prefix will be treated as api routes
  * @type{string}
@@ -31,3 +38,4 @@ export const apiAuthPrefix = "api/auth";
  * @type{string}
  */
 export const DEFAULT_LOGIN_REDIRECT = "/dashboard";
+export const DEFAULT_LOGIN_ADMIN_REDIRECT = "/users";

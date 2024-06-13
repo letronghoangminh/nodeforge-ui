@@ -11,33 +11,48 @@ import {
   NavigationMenuList,
   navigationMenuTriggerStyle,
 } from "@/components/ui/navigation-menu";
-
+import { useCurrentUser } from "@/hooks/use-current-user";
+import { Role } from "@/types";
 
 export function NavigationMenuLeft() {
+  const user = useCurrentUser();
+
   return (
     <NavigationMenu>
       <NavigationMenuList>
-        <NavigationMenuItem>
-          <Link href="/dashboard" legacyBehavior passHref>
-            <NavigationMenuLink className={navigationMenuTriggerStyle()}>
-              Dashboard
-            </NavigationMenuLink>
-          </Link>
-        </NavigationMenuItem>
-        <NavigationMenuItem>
-          <Link href="/subscription" legacyBehavior passHref>
-            <NavigationMenuLink className={navigationMenuTriggerStyle()}>
-              Subscription
-            </NavigationMenuLink>
-          </Link>
-        </NavigationMenuItem>
-        <NavigationMenuItem>
-          <Link href="/connect-github" legacyBehavior passHref>
-            <NavigationMenuLink className={navigationMenuTriggerStyle()}>
-              Integration
-            </NavigationMenuLink>
-          </Link>
-        </NavigationMenuItem>
+        {user?.role === Role.ADMIN ? (
+          <NavigationMenuItem>
+            <Link href="/users" legacyBehavior passHref>
+              <NavigationMenuLink className={navigationMenuTriggerStyle()}>
+                Users
+              </NavigationMenuLink>
+            </Link>
+          </NavigationMenuItem>
+        ) : (
+          <>
+            <NavigationMenuItem>
+              <Link href="/dashboard" legacyBehavior passHref>
+                <NavigationMenuLink className={navigationMenuTriggerStyle()}>
+                  Dashboard
+                </NavigationMenuLink>
+              </Link>
+            </NavigationMenuItem>
+            <NavigationMenuItem>
+              <Link href="/subscription" legacyBehavior passHref>
+                <NavigationMenuLink className={navigationMenuTriggerStyle()}>
+                  Subscription
+                </NavigationMenuLink>
+              </Link>
+            </NavigationMenuItem>
+            <NavigationMenuItem>
+              <Link href="/connect-github" legacyBehavior passHref>
+                <NavigationMenuLink className={navigationMenuTriggerStyle()}>
+                  Integration
+                </NavigationMenuLink>
+              </Link>
+            </NavigationMenuItem>
+          </>
+        )}
       </NavigationMenuList>
     </NavigationMenu>
   );

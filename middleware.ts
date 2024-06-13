@@ -1,15 +1,22 @@
 import { auth } from "@/auth";
 import authConfig from "./auth.config";
 import {
+  DEFAULT_LOGIN_ADMIN_REDIRECT,
   DEFAULT_LOGIN_REDIRECT,
+  adminRoutes,
   apiAuthPrefix,
   authRoutes,
   publicRoutes,
 } from "@/routes";
+import { Role } from "./types";
 
 export default auth((req) => {
   const { nextUrl } = req;
   const isLoggingIn = !!req.auth;
+
+  console.log(req?.auth?.user?.role);
+
+  const isAdmin = req?.auth?.user?.role === Role.ADMIN;
 
   const isApiAuthRoute = nextUrl.pathname.startsWith(apiAuthPrefix);
 
@@ -17,16 +24,34 @@ export default auth((req) => {
 
   const isAuthRoute = authRoutes.includes(nextUrl.pathname);
 
+  const isAdminRoute = adminRoutes.includes(nextUrl.pathname);
+
+  const isDashboardRoute = nextUrl.pathname === "/dashboard";
+
   if (isApiAuthRoute) {
     return null;
   }
 
+  if (isAdminRoute) {
+    if (!isAdmin) {
+      return Response.redirect(new URL(DEFAULT_LOGIN_REDIRECT, nextUrl));
+    }
+    return null;
+  }
+
   if (isAuthRoute) {
+    if (isAdmin) {
+      return Response.redirect(new URL(DEFAULT_LOGIN_ADMIN_REDIRECT, nextUrl));
+    }
     if (isLoggingIn) {
       return Response.redirect(new URL(DEFAULT_LOGIN_REDIRECT, nextUrl));
     }
 
     return null;
+  }
+
+  if (isAdmin && isDashboardRoute) {
+    return Response.redirect(new URL(DEFAULT_LOGIN_ADMIN_REDIRECT, nextUrl));
   }
 
   if (!isLoggingIn && !isPublicRoute) {

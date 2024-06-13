@@ -27,17 +27,14 @@ interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[]
   data: TData[],
   searchKey: string;
-  isDeployment: boolean;
 }
 
 export function DataTable<TData, TValue>({
   columns,
   data,
   searchKey,
-  isDeployment
 }: DataTableProps<TData, TValue>) {
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
-  const [isLoading, setIsLoading] = useState(false);
   const table = useReactTable({
     data,
     columns,
@@ -49,7 +46,6 @@ export function DataTable<TData, TValue>({
       columnFilters,
     }
   });
-  const router = useRouter();
 
 
 

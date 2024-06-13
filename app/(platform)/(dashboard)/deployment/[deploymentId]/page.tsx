@@ -2,6 +2,7 @@
 import { auth } from "@/auth";
 import { DeploymentClient } from "./_components/client";
 import TabsDeployment from "./_components/tabsDeplopment";
+import { Role } from "@/types";
 
 interface DeploymentPageProps {
     params: {
@@ -30,7 +31,7 @@ const DeploymentPage = async({
         <div className="flex-col w-full h-full">
         <div className="flex-1 space-y-4 p-8 pt-6">
           <DeploymentClient data={deployment} />
-          <TabsDeployment type={deployment?.type} deploymentId={deploymentId} /> 
+          {session?.user?.role === Role.USER && <TabsDeployment type={deployment?.type} deploymentId={deploymentId} /> }
         </div>
       </div>
     );

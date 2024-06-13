@@ -2,8 +2,6 @@
 
 import { DeploymentClient } from "./_components/client";
 import { DeploymentColumn } from "./_components/columns";
-import { headers } from "next/headers";
-import UseGetDeployment from "@/actions/getDeployments";
 import { auth } from "@/auth";
 import toast from "react-hot-toast";
 
@@ -26,7 +24,7 @@ async function getData() {
   }
    
 
-const DashBardPage = async () => {
+const DeploymentsPage = async () => {
     let data:any[] = await getData();
 
     const formattedDeployments:DeploymentColumn[]  = data.map((deployment) => {
@@ -49,4 +47,4 @@ const DashBardPage = async () => {
     );
 }
  
-export default DashBardPage;
+export default DeploymentsPage;
