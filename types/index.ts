@@ -21,7 +21,7 @@ export type Deployment = {
     | "ANGULAR"
     | "SVELTE"
     | "NUXT"
-    | "NESTJS"
+    | "NEST"
     | "OTHER";
   repositoryId: number;
   status: "PENDING" | "SUCCESS" | "FAILED";
@@ -63,7 +63,7 @@ export type ProfileType = {
 
 export type NewDeploymentBackEnd = {
   type: "BACKEND";
-  framework: "NESTJS";
+  framework: "NEST";
   name: string;
   command: string;
   repositoryName: string;

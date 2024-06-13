@@ -41,7 +41,7 @@ const formSchema = z.object({
     "SVELTE",
     "NUXT",
     "OTHER",
-    "NESTJS",
+    "NEST",
   ]),
   name: z.string().min(1),
   repositoryName: z.string().min(1),
@@ -95,7 +95,7 @@ const NewForm = () => {
         }
       : {
           type: "BACKEND",
-          framework: "NESTJS",
+          framework: "NEST",
           name: "",
           command: "",
           repositoryName: dataStore.name,
@@ -149,7 +149,11 @@ const NewForm = () => {
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     try{
 
-        const checkSubdomain = await fetch("https://api.nodeforge.site" + `/api/deployment/check-subdomain?subdomain=${values.subdomain}`, {
+        const checkSubdomain = await fetch("https://api.nodeforge.site" + `/api/deployment/check-subdomain`, {
+            method: "POST",
+            body: JSON.stringify({
+              subdomain: values.subdomain,
+            }),
             headers: {
                 "Content-Type": "application/json",
                 authorization: `Bearer ${session?.accessToken}`,
@@ -345,7 +349,7 @@ const NewForm = () => {
                             </>
                             :
                             <>
-                              <SelectItem value="NESTJS">NESTJS</SelectItem>
+                              <SelectItem value="NEST">NEST</SelectItem>
                               <SelectItem value="EXPRESS">EXPRESS</SelectItem>
                             </>
                           }

@@ -39,7 +39,22 @@ const DataCard = ({ data }: DataCardProps) => {
             </div>
           </div>
           <div className="flex flex-col gap-2">
-            <div className=" text-xl font-semibold text-gray-500">STATUS</div>
+            <div className=" text-xl font-semibold text-gray-500">DEPLOYMENT STATUS</div>
+            <div className="flex items-center">
+              {data.status === "SUCCESS" ? (
+                <CheckCircle className="mr-2 h-4 w-4 text-emerald-400" />
+              ) : data.status === "PENDING" ? (
+                <Pause className="mr-2 h-4 w-4 text-yellow-400" />
+              ) : (
+                <XCircle className="mr-2 h-4 w-4 text-red-400" />
+              )}
+              <span className=" text-lg font-medium text-emerald-400">
+                {data.status}
+              </span>{" "}
+            </div>
+          </div>
+          <div className="flex flex-col gap-2">
+            <div className=" text-xl font-semibold text-gray-500">WEBSITE STATUS</div>
             <div className="flex items-center">
               {data.status === "SUCCESS" ? (
                 <CheckCircle className="mr-2 h-4 w-4 text-emerald-400" />
