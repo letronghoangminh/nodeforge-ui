@@ -24,8 +24,6 @@ export default auth((req) => {
 
   const isAdminRoute = adminRoutes.includes(nextUrl.pathname);
 
-  const isDashboardRoute = nextUrl.pathname === "/dashboard";
-
   if (isApiAuthRoute) {
     return null;
   }
@@ -44,10 +42,6 @@ export default auth((req) => {
 
     return null;
   }
-
-  // if (isAdmin && isDashboardRoute) {
-  //   return Response.redirect(new URL(DEFAULT_LOGIN_ADMIN_REDIRECT, nextUrl));
-  // }
 
   if (!isLoggingIn && !isPublicRoute) {
     return Response.redirect(new URL("/auth/login", nextUrl));

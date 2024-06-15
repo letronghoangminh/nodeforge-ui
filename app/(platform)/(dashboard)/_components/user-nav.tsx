@@ -27,7 +27,6 @@ export function UserNav() {
 
   const signOut = () => {
     logout()
-    router.push("/auth/login")
   }
 
 
@@ -73,11 +72,11 @@ export function UserNav() {
           </DropdownMenuItem> */}
         </DropdownMenuGroup>
         <DropdownMenuSeparator />
-        {user && <DropdownMenuItem onClick={signOut} >
+        <DropdownMenuItem onClick={signOut} >
           <LogOut className="mr-2 h-4 w-4" />
           <span>Log out</span>
           <DropdownMenuShortcut>⇧⌘Q</DropdownMenuShortcut>
-        </DropdownMenuItem>}
+        </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
   )
