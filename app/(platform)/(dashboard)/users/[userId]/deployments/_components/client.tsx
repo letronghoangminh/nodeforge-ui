@@ -12,10 +12,12 @@ import { DeploymentColumn, columns } from "./columns";
 
 interface DeploymentClientProps {
   data: DeploymentColumn[];
+  name: string;
 };
 
 export const DeploymentClient: React.FC<DeploymentClientProps> = ({
-  data
+  data,
+  name
 }) => {
   const params = useParams();
   const router = useRouter();
@@ -24,7 +26,7 @@ export const DeploymentClient: React.FC<DeploymentClientProps> = ({
   return (
     <> 
       <div className="flex items-center justify-between ">
-        <Heading title={`List Deployment`} description={`Number of deployment ${data?.length}`} />
+        <Heading title={`List Deployment of ${name}`} description={`Number of deployment ${data?.length}`} />
       </div>
       <Separator />
       <DataTable searchKey="name" columns={columns} data={data} />

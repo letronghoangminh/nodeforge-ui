@@ -27,12 +27,16 @@ async function getData(userId:number) {
 interface DeploymentProps {
   params: {
     userId: string;
+  },
+  searchParams: {
+    userName: string;
   }
 }
    
 
 const DeploymentsPage = async ({
-  params
+  params,
+  searchParams
 }:DeploymentProps) => {
     let data:any[] = await getData(+params.userId);
 
@@ -50,7 +54,7 @@ const DeploymentsPage = async ({
     return ( 
         <div className="flex-col w-full h-full">
         <div className="flex-1 space-y-4 p-8 pt-6">
-          <DeploymentClient data={formattedDeployments} /> 
+          <DeploymentClient name={searchParams.userName} data={formattedDeployments} /> 
         </div>
       </div>
     );
