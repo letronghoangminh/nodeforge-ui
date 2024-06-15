@@ -1,4 +1,4 @@
-import { ExternalUser } from "@/lib/next-auth";
+import { ExternalUser } from "@/next-auth";
 import { Card, CardContent, CardHeader } from "./ui/card";
 
 interface UserInfoProps {

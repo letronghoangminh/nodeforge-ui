@@ -1,6 +1,7 @@
 export enum Role {
   USER = "USER",
   ADMIN = "ADMIN",
+  STAFF = "STAFF",
 }
 
 export type Repository = {
@@ -46,7 +47,6 @@ export type NewDeploymentFrontEnd = {
   type: "FRONTEND";
   framework: "NEXT" | "VUE" | "REACT" | "ANGULAR" | "SVELTE" | "NUXT" | "OTHER";
   name: string;
-  command: string;
   repositoryName: string;
   repositoryBranch: string;
   repositoryUrl: string;
@@ -58,13 +58,14 @@ export type NewDeploymentFrontEnd = {
 export type ProfileType = {
   id: number;
   email: string;
+  username: string;
   role: Role;
   phoneNumber: string;
 };
 
 export type NewDeploymentBackEnd = {
   type: "BACKEND";
-  framework: "NEST";
+  framework: "NEST" | "EXPRESS";
   name: string;
   command: string;
   repositoryName: string;

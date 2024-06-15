@@ -44,7 +44,10 @@ const TabsDeployment = ({ type, deploymentId }: TabsDeploymentProps) => {
 
   console.log(logs);
 
-  const { data: environment } = useQuery<any[]>({
+  const { data: environment } = useQuery<{
+    id: number;
+    envVars: Record<string, string>;
+  }>({
     queryKey: ["environment", deploymentId],
     queryFn: async () => {
       const environment = await fetch(
@@ -156,7 +159,9 @@ const TabsDeployment = ({ type, deploymentId }: TabsDeploymentProps) => {
               data={
                 environment || {
                   id: 0,
-                  envVars: {}
+                  envVars: {
+                    "": "",
+                  }
                 }
               }
             />

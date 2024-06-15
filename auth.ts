@@ -34,11 +34,10 @@ export const {
   callbacks: {
     async signIn({ user, account }) {
       if (account?.provider !== "credentials") return true;
-
-      const existingUser = jwtDecode(user?.accessToken || "") as any;
-      if (!existingUser) {
-        return false;
-      }
+      // const existingUser = jwtDecode(user?.accessToken || "") as any;
+      // if (!existingUser) {
+      //   return false;
+      // }
 
       return true;
     },

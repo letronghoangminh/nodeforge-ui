@@ -22,6 +22,11 @@ const formSchema = z.object({
   envVars: z.record(z.string()),
 });
 
+interface EnvVarField {
+  key: string;
+  value: string;
+}
+
 type EnvironmentFormValues = z.infer<typeof formSchema>;
 
 interface EnvironmentFormProps {
@@ -39,7 +44,7 @@ const EnvironmentForm = ({ data }: EnvironmentFormProps) => {
     const [loading, setLoading] = useState(false);
   const { data: session, status } = useSession();
   const router = useRouter();
-  const [envVarFields, setEnvVarFields] = useState(convertObjectToArray(data.envVars));
+  const [envVarFields, setEnvVarFields] = useState(convertObjectToArray(data?.envVars));
 
   const defaultValues = {
     id: data.id,
@@ -58,30 +63,27 @@ const EnvironmentForm = ({ data }: EnvironmentFormProps) => {
     setEnvVarFields([...envVarFields, { key: "", value: "" }]);
   };
 
-  const handleEnvVarChange = (index: number, field: string, value: string) => {
-    const newEnvVarFields = [...envVarFields];
+  const handleEnvVarChange = (index: number, field: keyof EnvVarField, value: string) => {
+    const newEnvVarFields: EnvVarField[] = [...envVarFields];
     newEnvVarFields[index][field] = value;
     setEnvVarFields(newEnvVarFields);
-    console.log(newEnvVarFields);
-    const object = {};
-    // Update the form value for envVars
-    newEnvVarFields.map((envVar) => {
+  
+    const object: Record<string, string> = {};
+    newEnvVarFields.forEach((envVar) => {
       if (envVar.key) object[envVar.key] = envVar.value;
     });
-    console.log(object);
-    form.setValue("envVars", object);
+    form.setValue("envVars", object)
   };
-
-  const deleteEnvVarField = (index) => {
-    const newEnvVarFields = envVarFields.filter((_, i) => i !== index);
+  
+  const deleteEnvVarField = (index: number) => {
+    const newEnvVarFields: EnvVarField[] = envVarFields.filter((_, i) => i !== index);
     setEnvVarFields(newEnvVarFields);
-
-    const object = {};
-    // Update the form value for envVars
-    newEnvVarFields.map((envVar) => {
+  
+    const object: Record<string, string> = {};
+    newEnvVarFields.forEach((envVar) => {
       if (envVar.key) object[envVar.key] = envVar.value;
     });
-    form.setValue("envVars", object);
+    form.setValue("envVars", object)
   };
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
@@ -170,7 +172,6 @@ const EnvironmentForm = ({ data }: EnvironmentFormProps) => {
             <Button
               type="submit"
               variant={"destructive"}
-              loading={isSubmitting || !isValid}
               disabled={isSubmitting || !isValid}
             >Save</Button>
           </div>

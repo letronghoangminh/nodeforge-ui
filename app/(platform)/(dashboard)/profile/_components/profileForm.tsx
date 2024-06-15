@@ -29,7 +29,8 @@ interface ProfileFormProps {
 const ProfileForm = ({initialData}: ProfileFormProps) => {
   const [loading, setLoading] = useState(false);
   const router = useRouter();
-  const session = useSession();
+  const {status, data: session} = useSession();
+
 
 
   const form = useForm<ProfileFormValues>({
@@ -40,14 +41,18 @@ const ProfileForm = ({initialData}: ProfileFormProps) => {
     }
   });
 
+  if(status !== "authenticated") {
+    return null;
+  }
+
   const onSubmit = async (data: ProfileFormValues) => {
     try {
       setLoading(true);
-      const res = await fetch("https://api.nodeforge.site/" + `api/users/${session?.data?.user?.username}`, {
+      const res = await fetch("https://api.nodeforge.site/" + `api/users/${session?.user.username || ""}`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
-          authorization: `Bearer ${session?.data?.accessToken}`,
+          authorization: `Bearer ${session?.accessToken}`,
         },
         body: JSON.stringify(data),
       });
@@ -64,6 +69,7 @@ const ProfileForm = ({initialData}: ProfileFormProps) => {
       setLoading(false);
     }
   };
+
 
 
   return (

@@ -1,5 +1,3 @@
-import { auth } from "@/auth";
-import authConfig from "./auth.config";
 import {
   DEFAULT_LOGIN_ADMIN_REDIRECT,
   DEFAULT_LOGIN_REDIRECT,
@@ -9,6 +7,10 @@ import {
   publicRoutes,
 } from "@/routes";
 import { Role } from "./types";
+import NextAuth from "next-auth";
+import authConfig from "@/auth.config";
+
+const { auth } = NextAuth(authConfig);
 
 export default auth((req) => {
   const { nextUrl } = req;
@@ -27,14 +29,14 @@ export default auth((req) => {
   const isDashboardRoute = nextUrl.pathname === "/dashboard";
 
   if (isApiAuthRoute) {
-    return null;
+    return;
   }
 
   if (isAdminRoute) {
     if (!isAdmin) {
       return Response.redirect(new URL(DEFAULT_LOGIN_REDIRECT, nextUrl));
     }
-    return null;
+    return;
   }
 
   if (isAuthRoute) {
@@ -42,7 +44,7 @@ export default auth((req) => {
       return Response.redirect(new URL(DEFAULT_LOGIN_REDIRECT, nextUrl));
     }
 
-    return null;
+    return;
   }
 
   if (isAdmin && isDashboardRoute) {
@@ -57,7 +59,7 @@ export default auth((req) => {
     return Response.redirect(new URL("/auth/login", nextUrl));
   }
 
-  return null;
+  return;
 });
 
 export const config = {

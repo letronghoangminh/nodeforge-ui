@@ -29,7 +29,7 @@ const ListRepo = ({ data }: ListRepoProps) => {
 
   const redirect = (item: Repository) => {
     repository.replaceItem(item)
-    router.push(`/web/new/?type=front-end`);
+    router.push(`/web/new`);
   }
 
   return (

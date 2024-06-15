@@ -17,9 +17,11 @@ const Profile = async() => {
         }
     })
 
-    if(res.ok) {
-        profile = await res.json();
+    if(!res.ok) {
+        return null
     }
+
+    profile = await res.json();
 
     return ( 
         <div className="flex-col w-full h-full" >

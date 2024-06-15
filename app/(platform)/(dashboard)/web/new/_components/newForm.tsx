@@ -28,9 +28,11 @@ import toast from "react-hot-toast";
 import * as z from "zod";
 import { useSession } from "next-auth/react";
 import { useQuery } from "@tanstack/react-query";
-import { comma } from "postcss/lib/list";
 
-
+interface EnvVarField {
+  key: string;
+  value: string;
+}
 
 const formSchema = z.object({
   type: z.enum(["FRONTEND", "BACKEND"]),
@@ -43,6 +45,7 @@ const formSchema = z.object({
     "NUXT",
     "OTHER",
     "NEST",
+    "EXPRESS",
   ]),
   name: z.string().min(1),
   repositoryName: z.string().min(1),
@@ -86,7 +89,6 @@ const NewForm = () => {
           type: "FRONTEND",
           framework: "NEXT",
           name: "",
-          command: "",
           repositoryName: dataStore.name,
           repositoryBranch: "",
           repositoryUrl: `https://github.com/${dataStore.ownerName}/${dataStore.name}.git`,
@@ -119,37 +121,32 @@ const NewForm = () => {
     setEnvVarFields([...envVarFields, { key: "", value: "" }]);
   };
 
-  const handleEnvVarChange = (index:number, field:string, value:string) => {
-    const newEnvVarFields = [...envVarFields];
+  const handleEnvVarChange = (index: number, field: keyof EnvVarField, value: string) => {
+    const newEnvVarFields: EnvVarField[] = [...envVarFields];
     newEnvVarFields[index][field] = value;
     setEnvVarFields(newEnvVarFields);
-    console.log(newEnvVarFields);
-    const object = {}
-    // Update the form value for envVars
-    newEnvVarFields.map((envVar) => {
+  
+    const object: Record<string, string> = {};
+    newEnvVarFields.forEach((envVar) => {
       if (envVar.key) object[envVar.key] = envVar.value;
     });
-    form.setValue("envVars", object);
+    form.setValue("envVars", object)
   };
-
-  const deleteEnvVarField = (index) => {
-    const newEnvVarFields = envVarFields.filter((_, i) => i !== index);
+  
+  const deleteEnvVarField = (index: number) => {
+    const newEnvVarFields: EnvVarField[] = envVarFields.filter((_, i) => i !== index);
     setEnvVarFields(newEnvVarFields);
-
-
-    const object = {}
-    // Update the form value for envVars
-    newEnvVarFields.map((envVar) => {
+  
+    const object: Record<string, string> = {};
+    newEnvVarFields.forEach((envVar) => {
       if (envVar.key) object[envVar.key] = envVar.value;
     });
-    form.setValue("envVars", object);
-    
+    form.setValue("envVars", object)
   };
 
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     try{
-
         const checkSubdomain = await fetch("https://api.nodeforge.site" + `/api/deployment/check-subdomain`, {
             method: "POST",
             body: JSON.stringify({
@@ -339,8 +336,8 @@ const NewForm = () => {
                             <SelectValue placeholder="Select a verified email to display" />
                           </SelectTrigger>
                         </FormControl>
-                        <SelectContent>
-                          {type === "FRONTEND" ? 
+                        <SelectContent defaultValue={type === "FRONTEND" ? "NEXT" : "NEST"} >
+                          {type === "FRONTEND" ?  
                             <>
                               <SelectItem value="NEXT">NEXT</SelectItem>
                               <SelectItem value="VUE">VUE</SelectItem>
@@ -486,6 +483,7 @@ const NewForm = () => {
                         </FormControl>
                         <Button
                           onClick={() => deleteEnvVarField(index)}
+                          type="button"
                           variant={"destructive"}
                           size={"icon"}
                         >
