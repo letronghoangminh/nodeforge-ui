@@ -13,14 +13,20 @@ import {
 } from "@/components/ui/navigation-menu";
 import { useCurrentUser } from "@/hooks/use-current-user";
 import { Role } from "@/types";
+import { useSession } from "next-auth/react";
 
 export function NavigationMenuLeft() {
-  const user = useCurrentUser();
+  const {data, status } = useSession();
+  React.useEffect(() => {
+
+  }, [status])
+
+  if(status === "loading") return null;
 
   return (
     <NavigationMenu>
       <NavigationMenuList>
-        {user?.role === Role.ADMIN ? (
+        {data.user?.role === Role.ADMIN && (
           <NavigationMenuItem>
             <Link href="/users" legacyBehavior passHref>
               <NavigationMenuLink className={navigationMenuTriggerStyle()}>
@@ -28,7 +34,8 @@ export function NavigationMenuLeft() {
               </NavigationMenuLink>
             </Link>
           </NavigationMenuItem>
-        ) : (
+        )}
+        {data.user?.role === Role.USER && (
           <>
             <NavigationMenuItem>
               <Link href="/dashboard" legacyBehavior passHref>

@@ -35,10 +35,10 @@ export const {
     async signIn({ user, account }) {
       if (account?.provider !== "credentials") return true;
 
-      // const existingUser = jwtDecode(user?.accessToken || "") as any;
-      // if (!existingUser || !existingUser.isVerified) {
-      //   return false;
-      // }
+      const existingUser = jwtDecode(user?.accessToken || "") as any;
+      if (!existingUser) {
+        return false;
+      }
 
       return true;
     },
@@ -51,7 +51,7 @@ export const {
       return await refreshToken(token);
     },
     async session({ token, session }) {
-      session.user = token?.accessToken ? jwtDecode(token?.accessToken) : null;
+      session.user = jwtDecode(token?.accessToken);
       session.accessToken = token.accessToken;
       session.refreshToken = token.refreshToken;
 
