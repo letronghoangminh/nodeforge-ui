@@ -15,6 +15,7 @@ import toast from "react-hot-toast";
 import { useQuery } from "@tanstack/react-query";
 import { useSession } from "next-auth/react";
 import { useMemo } from "react";
+import axios from "axios";
 interface DataCardProps {
   data: Deployment;
 }
@@ -27,36 +28,32 @@ const DataCard = ({ data }: DataCardProps) => {
     toast.success("copied to clipboard.");
   };
 
-  const { data: checkData } = useQuery<{ status: number, data: any }>({
+  const { data: checkData } = useQuery<{ status: number; data: any }>({
     queryKey: ["WEBSITE_STATUS"],
     queryFn: async () => {
-      const response = await fetch(
-        `https://${data.amplifyConfiguration?.subdomain}.nodeforge.site`,
+      const response = await axios.post(
+        process.env.NEXT_PUBLIC_API_URL + `/api/getUrl`,
         {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-            authorization: `Bearer ${session?.accessToken}`,
-          },
+          url: `https://${data.amplifyConfiguration?.subdomain}.nodeforge.site`,
         }
-      )
+      );
       return {
         status: response.status,
-        data: await response.json(),
+        data: response.data,
       };
     },
     refetchInterval: 10 * 1000,
   });
 
   const websiteStatus = useMemo(() => {
-    if(!checkData){
-      return "INACTIVE"
+    if (!checkData) {
+      return "INACTIVE";
     }
-    if(checkData?.status >= 200 && checkData?.status < 300 ){
-      return "ACTIVE"
+    if (checkData?.status >= 200 && checkData?.status < 300) {
+      return "ACTIVE";
     }
-    return "INACTIVE"
-  }, [checkData])
+    return "INACTIVE";
+  }, [checkData]);
 
   return (
     <Card className="w-[1200px]">
@@ -66,16 +63,6 @@ const DataCard = ({ data }: DataCardProps) => {
       <Separator />
       <CardContent className="">
         <div className="md:grid md:grid-cols-4 gap-8 pt-5">
-          <div className="flex flex-col gap-2">
-            <div className=" text-xl font-semibold text-gray-500">ID</div>
-            <div
-              onClick={() => onCopy(data.id.toString())}
-              className="flex items-center"
-            >
-              <Copy className="mr-2 h-4 w-4" />{" "}
-              <span className=" text-lg font-medium text-black">{data.id}</span>{" "}
-            </div>
-          </div>
           <div className="flex flex-col gap-2">
             <div className=" text-xl font-semibold text-gray-500">
               DEPLOYMENT STATUS
@@ -99,13 +86,20 @@ const DataCard = ({ data }: DataCardProps) => {
             </div>
             <div className="flex items-center">
               {websiteStatus === "ACTIVE" ? (
-                <CheckCircle className="mr-2 h-4 w-4 text-emerald-400" />
+                <>
+                  <CheckCircle className="mr-2 h-4 w-4 text-emerald-400" />
+                  <span className=" text-lg font-medium text-emerald-400">
+                    {websiteStatus}
+                  </span>
+                </>
               ) : (
-                <Loader2 className="w-6 h-6 text-sky-700 animate-spin" />
+                <>
+                  <Loader2 className="w-6 h-6 text-gray-500 animate-spin" />
+                  <span className=" text-lg font-medium text-gray-500">
+                    {websiteStatus}
+                  </span>
+                </>
               )}
-              <span className=" text-lg font-medium text-emerald-400">
-                {websiteStatus}
-              </span>{" "}
             </div>
           </div>
           <div className="flex flex-col gap-2">

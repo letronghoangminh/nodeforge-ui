@@ -1,31 +1,40 @@
 "use server"
 
+import toast from "react-hot-toast";
 import { DeploymentClient } from "./_components/client";
 import { DeploymentColumn } from "./_components/columns";
 import { auth } from "@/auth";
-import toast from "react-hot-toast";
 
 
-async function getData() {
+
+async function getData(userId:number) {
     const session = await auth();
 
-    const res = await fetch("https://api.nodeforge.site/" + `api/deployment`, {
+    const res = await fetch("https://api.nodeforge.site/" + `/api/deployment/admin/${userId}/deployments`, {
         headers: {
             "Content-Type": "application/json",
             "Authorization": `Bearer ${session?.accessToken}`
         }
     })
+
     if (!res.ok) {
-      console.log(res.statusText)
       return []
     }
    
-    return res.json()
+    return await res.json()
+}
+
+interface DeploymentProps {
+  params: {
+    userId: string;
   }
+}
    
 
-const DeploymentsPage = async () => {
-    let data:any[] = await getData();
+const DeploymentsPage = async ({
+  params
+}:DeploymentProps) => {
+    let data:any[] = await getData(+params.userId);
 
     const formattedDeployments:DeploymentColumn[]  = data.map((deployment) => {
         return {

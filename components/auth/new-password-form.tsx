@@ -49,7 +49,6 @@ export const NewPasswordForm = () => {
         setError(data?.error);
 
         setSuccess(data?.success);
-        // router.push("/dashboard");
       });
     });
   };

@@ -24,31 +24,28 @@ export const login = async (values: z.infer<typeof LoginSchema>) => {
   );
 
   const existingUser = await res.json();
-  console.log("existingUser", existingUser);
 
   if (!existingUser || !existingUser.username || !existingUser.email) {
     return { error: "User does not exist!" };
   }
 
-  console.log("existingUser.isVerified", existingUser);
-
-  if (!existingUser.isVerified) {
-    try {
-      await fetch("https://api.nodeforge.site/" + `api/users/verify`, {
-        method: "POST",
-        body: JSON.stringify({
-          username: username,
-          email: existingUser.email,
-        }),
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
-      return { success: "Confirmation email sent" };
-    } catch (error) {
-      return { error: "An error occurred!" };
-    }
-  }
+  // if (!existingUser.isVerified) {
+  //   try {
+  //     await fetch("https://api.nodeforge.site/" + `api/users/verify`, {
+  //       method: "POST",
+  //       body: JSON.stringify({
+  //         username: username,
+  //         email: existingUser.email,
+  //       }),
+  //       headers: {
+  //         "Content-Type": "application/json",
+  //       },
+  //     });
+  //     return { success: "Confirmation email sent" };
+  //   } catch (error) {
+  //     return { error: "An error occurred!" };
+  //   }
+  // }
 
   try {
     await signIn("credentials", {

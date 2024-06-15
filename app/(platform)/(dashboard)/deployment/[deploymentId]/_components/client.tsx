@@ -9,19 +9,17 @@ import { Heading } from "@/components/ui/heading";
 import { Separator } from "@/components/ui/separator";
 import { Deployment } from "@/types";
 import DataCard from "./data-card";
-
+import { Skeleton } from "@/components/ui/skeleton";
 
 interface DeploymentClientProps {
   data: Deployment;
-};
+}
 
-export const DeploymentClient: React.FC<DeploymentClientProps> = ({
-  data
-}) => {
+export const DeploymentClient = ({ data }: DeploymentClientProps) => {
   const router = useRouter();
 
   return (
-    <> 
+    <>
       <div className="flex items-center justify-between ">
         <Heading title={data.name} description={data.reason || ""} />
         <Button size={"icon"} onClick={() => router.refresh()}>
@@ -30,6 +28,19 @@ export const DeploymentClient: React.FC<DeploymentClientProps> = ({
       </div>
       <Separator />
       <DataCard data={data} />
+    </>
+  );
+};
+
+DeploymentClient.Skeleton = function DeploymentClientSkeleton() {
+  return (
+    <>
+      <div className="flex items-center justify-between">
+        <Heading title="Loading" description="Loading" />
+        <Skeleton className="w-4 h-4" />
+      </div>
+      <Separator />
+      <Skeleton className=" h-[500px] W-full" />
     </>
   );
 };

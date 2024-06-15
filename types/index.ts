@@ -46,6 +46,7 @@ export type NewDeploymentFrontEnd = {
   type: "FRONTEND";
   framework: "NEXT" | "VUE" | "REACT" | "ANGULAR" | "SVELTE" | "NUXT" | "OTHER";
   name: string;
+  command: string;
   repositoryName: string;
   repositoryBranch: string;
   repositoryUrl: string;

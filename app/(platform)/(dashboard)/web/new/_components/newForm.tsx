@@ -28,6 +28,7 @@ import toast from "react-hot-toast";
 import * as z from "zod";
 import { useSession } from "next-auth/react";
 import { useQuery } from "@tanstack/react-query";
+import { comma } from "postcss/lib/list";
 
 
 
@@ -48,6 +49,7 @@ const formSchema = z.object({
   repositoryBranch: z.string().min(1),
   repositoryUrl: z.string().min(1),
   repositoryOwner: z.string().min(1),
+  command: z.string().min(1).optional(),
   subdomain: z.string().min(1),
   envVars: z.record(z.string()),
 });
@@ -67,8 +69,7 @@ const NewForm = () => {
 
   const {data: dataBranch} = useQuery<{name: string}[]>({
     queryKey: ["branch", dataStore.name, dataStore.ownerName],
-    queryFn: () => fetch("https://api.nodeforge.site/" + `/api/github/branches?repository=${dataStore.name}&owner=${dataStore.ownerName}`,
-
+    queryFn: () => fetch("https://api.nodeforge.site" + `/api/github/branches?repository=${dataStore.name}&owner=${dataStore.ownerName}`,
     {
       headers: {
         authorization: `Bearer ${session?.accessToken}`,
@@ -78,7 +79,6 @@ const NewForm = () => {
     ).then((res) => res.json()),
 });
 
-  console.log(dataBranch)
 
   const defaultValues: NewDeploymentStatic =
   type === "FRONTEND"
@@ -86,6 +86,7 @@ const NewForm = () => {
           type: "FRONTEND",
           framework: "NEXT",
           name: "",
+          command: "",
           repositoryName: dataStore.name,
           repositoryBranch: "",
           repositoryUrl: `https://github.com/${dataStore.ownerName}/${dataStore.name}.git`,
@@ -172,9 +173,9 @@ const NewForm = () => {
                 "Content-Type": "application/json",
                 authorization: `Bearer ${session?.accessToken}`,
             }
-        });
-        if(!res.ok){
-          toast.error("Something went wrong")
+        }).then((res) => res.json());
+        if(!(res.statusCode === 200)  ){
+          toast.error(res.message || "Something went wrong")
           return;
         }
         toast.success("Deployment created successfully")
@@ -183,6 +184,7 @@ const NewForm = () => {
         toast.error("Something went wrong")
     }
   };
+
 
   return (
     <div className=" flex flex-col justify-between">
@@ -261,7 +263,7 @@ const NewForm = () => {
                   <FormControl>
                     <Input
                       className=" max-w-[700px]"
-                      disabled={loading}
+                      disabled={true}
                       placeholder="Product name"
                       {...field}
                     />
@@ -504,7 +506,6 @@ const NewForm = () => {
             <Button
               type="submit"
               variant={"destructive"}
-              loading={isSubmitting || !isValid}
               disabled={isSubmitting || !isValid}
             >Deployment</Button>
           </div>

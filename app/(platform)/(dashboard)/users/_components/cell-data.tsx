@@ -15,7 +15,7 @@ const CellData = ({data, id, isBadge} : CellDataProps) => {
     const router = useRouter()
 
     const redirectDetail = async (id: any) => {
-        router.push(`/users/deployments`);
+        router.push(`/users/${id}/deployments`);
     }
 
 

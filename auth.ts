@@ -31,9 +31,6 @@ export const {
     signIn: "/auth/login",
     error: "/auth/error",
   },
-  events: {
-    async linkAccount({ user }) {},
-  },
   callbacks: {
     async signIn({ user, account }) {
       if (account?.provider !== "credentials") return true;
@@ -52,10 +49,9 @@ export const {
       if (currentTime < jwtDecode(token.accessToken).exp!) return token;
 
       return await refreshToken(token);
-      return token;
     },
     async session({ token, session }) {
-      session.user = jwtDecode(token.accessToken);
+      session.user = token?.accessToken ? jwtDecode(token?.accessToken) : null;
       session.accessToken = token.accessToken;
       session.refreshToken = token.refreshToken;
 
@@ -63,6 +59,6 @@ export const {
     },
   },
   session: { strategy: "jwt" },
-  secret: process.env.JWT_SECRET,
+  secret: process.env.AUTH_SECRET,
   ...authConfig,
 });

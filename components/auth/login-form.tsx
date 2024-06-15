@@ -51,7 +51,6 @@ export const LoginForm = () => {
         setError(data?.error);
 
         setSuccess(data?.success);
-        // router.push("/dashboard");
       });
     });
   };

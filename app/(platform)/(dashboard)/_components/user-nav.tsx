@@ -52,12 +52,12 @@ export function UserNav() {
         </DropdownMenuLabel>
         <DropdownMenuSeparator />
         <DropdownMenuGroup>
-          <DropdownMenuItem onClick={() => router.replace("profile")} >
+          <DropdownMenuItem onClick={() => router.push(`${process.env.NEXT_PUBLIC_API_URL}/profile`)} >
             <User className="mr-2 h-4 w-4" />
             <span>Profile</span>
             <DropdownMenuShortcut>⇧⌘P</DropdownMenuShortcut>
           </DropdownMenuItem>
-          <DropdownMenuItem onClick={() => router.push("subscription")} >
+          <DropdownMenuItem onClick={() => router.replace(`${process.env.NEXT_PUBLIC_API_URL}/subscription`)} >
             <CreditCard className="mr-2 h-4 w-4" />
             <span>Billing</span>
             <DropdownMenuShortcut>⌘B</DropdownMenuShortcut>

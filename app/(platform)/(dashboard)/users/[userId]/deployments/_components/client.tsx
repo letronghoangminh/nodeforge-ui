@@ -24,10 +24,7 @@ export const DeploymentClient: React.FC<DeploymentClientProps> = ({
   return (
     <> 
       <div className="flex items-center justify-between ">
-        <Heading title={`Dashboard`} description={`Number of deployment ${data?.length}`} />
-        <Button onClick={() => router.push(`/connect-github`)}>
-          <Plus className="mr-2 h-4 w-4" /> Add New
-        </Button>
+        <Heading title={`List Deployment`} description={`Number of deployment ${data?.length}`} />
       </div>
       <Separator />
       <DataTable searchKey="name" columns={columns} data={data} />

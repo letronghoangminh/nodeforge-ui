@@ -18,7 +18,6 @@ import { useQuery } from "@tanstack/react-query";
 import { useSession } from "next-auth/react";
 import { Skeleton } from "@/components/ui/skeleton";
 
-
 interface TabsDeploymentProps {
   type: "BACKEND" | "FRONTEND";
   deploymentId: string;
@@ -27,30 +26,25 @@ interface TabsDeploymentProps {
 const TabsDeployment = ({ type, deploymentId }: TabsDeploymentProps) => {
   const { data: session, status } = useSession();
 
+  let metrics: any = [];
 
-
-  
-
-  let metrics:any = []
-
-  const {data: logs} = useQuery<{timestamp: string, message: string}[]>({
+  const { data: logs } = useQuery<{ timestamp: string; message: string }[]>({
     queryKey: ["logs", deploymentId],
-    queryFn: () =>  fetch(
-        `https://api.nodeforge.site/api/deployment/${deploymentId}/logs`,
-        {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-            authorization: `Bearer ${session?.accessToken}`,
-          },
-        }
-      ).then((res) => res.json()),
-    enabled: status === "authenticated"
+    queryFn: () =>
+      fetch(`https://api.nodeforge.site/api/deployment/${deploymentId}/logs`, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          authorization: `Bearer ${session?.accessToken}`,
+
+        },
+      }).then((res) => res.json()),
+    enabled: status === "authenticated",
   });
 
-  console.log(logs)
+  console.log(logs);
 
-  const {data: environment} = useQuery<any[]>({
+  const { data: environment } = useQuery<any[]>({
     queryKey: ["environment", deploymentId],
     queryFn: async () => {
       const environment = await fetch(
@@ -63,12 +57,12 @@ const TabsDeployment = ({ type, deploymentId }: TabsDeploymentProps) => {
           },
         }
       ).then((res) => res.json());
-      return environment
+      return environment;
     },
-    enabled: status === "authenticated"
+    enabled: status === "authenticated",
   });
 
-  const {data: dataMetrics} = useQuery<{cpu: number, memory: number}[]>({
+  const { data: dataMetrics } = useQuery<{ cpu: number; memory: number }[]>({
     queryKey: ["metrics", deploymentId],
     queryFn: async () => {
       const metrics = await fetch(
@@ -81,21 +75,18 @@ const TabsDeployment = ({ type, deploymentId }: TabsDeploymentProps) => {
           },
         }
       ).then((res) => res.json());
-      return metrics
+      return metrics;
     },
-    enabled: type === "BACKEND" && status === "authenticated" 
+    enabled: type === "BACKEND" && status === "authenticated",
   });
 
-
-
-
-  if(status === "loading") {
+  if (status === "loading") {
     return (
-      <div className="w-[1200px] flex flex-col gap-4" >
-        <Skeleton  className=" w-full h-[40px]" />
-        <Skeleton  className=" w-full h-[150px]" />
+      <div className="w-[1200px] flex flex-col gap-4">
+        <Skeleton className=" w-full h-[40px]" />
+        <Skeleton className=" w-full h-[150px]" />
       </div>
-    )
+    );
   }
 
   return (
@@ -120,13 +111,11 @@ const TabsDeployment = ({ type, deploymentId }: TabsDeploymentProps) => {
         <Card>
           <CardHeader>
             <CardTitle>Metrics</CardTitle>
-            <CardDescription>
-              Metrics description
-            </CardDescription>
+            <CardDescription>Metrics description</CardDescription>
           </CardHeader>
           <CardContent className="space-y-2">
             <div className="flex justify-around">
-                <Metrics data={metrics || []} />
+              <Metrics data={metrics || { cpu: 0, memory: 0 }} />
             </div>
           </CardContent>
         </Card>
@@ -140,15 +129,14 @@ const TabsDeployment = ({ type, deploymentId }: TabsDeploymentProps) => {
           <CardContent className="space-y-2">
             <ScrollArea className="h-72 w-full rounded-md border">
               <div className="p-4">
-                {(logs || []).map((log: {
-                    timestamp: string;
-                    message: string;
-                }) => (
-                  <div className="w-full" key={log.timestamp} >
-                    <LogItem data={log} />
-                    <SelectSeparator className="my-2" />
-                  </div>
-                ))}
+                {(logs || []).map(
+                  (log: { timestamp: string; message: string }) => (
+                    <div className="w-full" key={log.timestamp}>
+                      <LogItem data={log} />
+                      <SelectSeparator className="my-2" />
+                    </div>
+                  )
+                )}
               </div>
             </ScrollArea>
           </CardContent>
@@ -164,7 +152,14 @@ const TabsDeployment = ({ type, deploymentId }: TabsDeploymentProps) => {
             </CardDescription>
           </CardHeader>
           <CardContent className="space-y-2">
-            <EnvironmentForm data={environment || []} />
+            <EnvironmentForm
+              data={
+                environment || {
+                  id: 0,
+                  envVars: {}
+                }
+              }
+            />
           </CardContent>
         </Card>
       </TabsContent>
@@ -173,3 +168,4 @@ const TabsDeployment = ({ type, deploymentId }: TabsDeploymentProps) => {
 };
 
 export default TabsDeployment;
+
