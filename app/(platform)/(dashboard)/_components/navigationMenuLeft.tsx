@@ -26,7 +26,7 @@ export function NavigationMenuLeft() {
   return (
     <NavigationMenu>
       <NavigationMenuList>
-        {data.user?.role === Role.ADMIN && (
+        {data?.user?.role === Role.ADMIN && (
           <NavigationMenuItem>
             <Link href="/users" legacyBehavior passHref>
               <NavigationMenuLink className={navigationMenuTriggerStyle()}>
@@ -35,7 +35,7 @@ export function NavigationMenuLeft() {
             </Link>
           </NavigationMenuItem>
         )}
-        {data.user?.role === Role.USER && (
+        {data?.user?.role === Role.USER && (
           <>
             <NavigationMenuItem>
               <Link href="/dashboard" legacyBehavior passHref>
