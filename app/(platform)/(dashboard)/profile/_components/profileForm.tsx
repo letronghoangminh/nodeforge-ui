@@ -61,7 +61,7 @@ const ProfileForm = ({initialData}: ProfileFormProps) => {
         toast.error("Something went wrong.");
         return;
       }
-      router.refresh();
+      window.location.reload(); 
       toast.success("Profile updated.");
     } catch (error: any) {
       toast.error('Something went wrong.');

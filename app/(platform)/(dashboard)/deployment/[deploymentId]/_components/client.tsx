@@ -1,8 +1,7 @@
 "use client";
 
 import { Plus, RefreshCcw } from "lucide-react";
-import { useParams, useRouter } from "next/navigation";
-import { DataTable } from "@/components/ui/data-table";
+
 
 import { Button } from "@/components/ui/button";
 import { Heading } from "@/components/ui/heading";
@@ -16,13 +15,12 @@ interface DeploymentClientProps {
 }
 
 export const DeploymentClient = ({ data }: DeploymentClientProps) => {
-  const router = useRouter();
 
   return (
     <>
       <div className="flex items-center justify-between ">
         <Heading title={data.name} description={data.reason || ""} />
-        <Button size={"icon"} onClick={() => router.refresh()}>
+        <Button size={"icon"} onClick={() => window.location.reload()}>
           <RefreshCcw className="h-4 w-4" />
         </Button>
       </div>

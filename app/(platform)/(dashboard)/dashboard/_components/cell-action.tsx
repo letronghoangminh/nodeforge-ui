@@ -45,7 +45,7 @@ export const CellAction: React.FC<CellActionProps> = ({
       }
       })
       toast.success('deploy deleted.');
-      router.refresh();
+      window.location.reload(); 
     } catch (error) {
       toast.error('deploy failed to delete.');
     } finally {

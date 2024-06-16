@@ -106,7 +106,7 @@ const EnvironmentForm = ({ data }: EnvironmentFormProps) => {
       setLoading(false);
 
       toast.success("Deployment created successfully");
-      router.refresh();
+      window.location.reload(); 
     } catch (error) {
       setLoading(false);
 
