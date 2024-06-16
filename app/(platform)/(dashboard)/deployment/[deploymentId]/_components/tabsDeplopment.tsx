@@ -26,7 +26,6 @@ interface TabsDeploymentProps {
 const TabsDeployment = ({ type, deploymentId }: TabsDeploymentProps) => {
   const { data: session, status } = useSession();
 
-  let metrics: any = [];
 
   const { data: logs } = useQuery<{ timestamp: string; message: string }[]>({
     queryKey: ["logs", deploymentId],
@@ -42,7 +41,6 @@ const TabsDeployment = ({ type, deploymentId }: TabsDeploymentProps) => {
     enabled: status === "authenticated",
   });
 
-  console.log(logs);
 
   const { data: environment } = useQuery<{
     id: number;
@@ -65,7 +63,7 @@ const TabsDeployment = ({ type, deploymentId }: TabsDeploymentProps) => {
     enabled: status === "authenticated",
   });
 
-  const { data: dataMetrics } = useQuery<{ cpu: number; memory: number }[]>({
+  const { data: dataMetrics } = useQuery<{ cpu: number; memory: number }>({
     queryKey: ["metrics", deploymentId],
     queryFn: async () => {
       const metrics = await fetch(
@@ -118,7 +116,7 @@ const TabsDeployment = ({ type, deploymentId }: TabsDeploymentProps) => {
           </CardHeader>
           <CardContent className="space-y-2">
             <div className="flex justify-around">
-              <Metrics data={metrics || { cpu: 0, memory: 0 }} />
+              <Metrics data={dataMetrics || { cpu: 0, memory: 0 }} />
             </div>
           </CardContent>
         </Card>

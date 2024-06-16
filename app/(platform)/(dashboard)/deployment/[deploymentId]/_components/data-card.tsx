@@ -55,6 +55,14 @@ const DataCard = ({ data }: DataCardProps) => {
     return "INACTIVE";
   }, [checkData]);
 
+
+  const urlDomain = useMemo(() => {
+    if(data.type === "FRONTEND"){
+      return `https://${data.amplifyConfiguration?.subdomain}.nodeforge.site`
+    }
+    return `https://${data.ecsConfiguration?.subdomain}.nodeforge.site`
+  },[data])
+
   return (
     <Card className="w-[1200px]">
       <CardHeader>
@@ -118,13 +126,13 @@ const DataCard = ({ data }: DataCardProps) => {
               <span
                 onClick={() =>
                   onCopy(
-                    `https://${data.amplifyConfiguration?.subdomain}.nodeforge.site`
+                    urlDomain
                   )
                 }
                 className=" text-xs font-medium text-black flex "
               >
                 <Copy className="mr-2 h-4 w-4" />{" "}
-                {`https://${data.amplifyConfiguration?.subdomain}.nodeforge.site`}
+                {urlDomain}
               </span>{" "}
             </div>
           </div>
