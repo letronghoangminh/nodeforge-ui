@@ -16,9 +16,16 @@ import { useQuery } from "@tanstack/react-query";
 import { useSession } from "next-auth/react";
 import { useMemo } from "react";
 import axios from "axios";
+import { headers } from "next/headers";
 interface DataCardProps {
   data: Deployment;
 }
+
+const corsHeaders = {
+  "Access-Control-Allow-Origin": "*",
+  "Access-Control-Allow-Methods": "GET, POST, PUT, DELETE, OPTIONS",
+  "Access-Control-Allow-Headers": "Content-Type, Authorization",
+};
 
 const DataCard = ({ data }: DataCardProps) => {
   const { data: session, status } = useSession();
@@ -35,6 +42,11 @@ const DataCard = ({ data }: DataCardProps) => {
         process.env.NEXT_PUBLIC_API_URL + `/api/getUrl`,
         {
           url: `https://${data.amplifyConfiguration?.subdomain}.nodeforge.site`,
+          headers: {
+            "Content-Type": "application/json",
+            authorization: `Bearer ${session?.accessToken}`,
+            ...corsHeaders,
+          },
         }
       );
       return {
