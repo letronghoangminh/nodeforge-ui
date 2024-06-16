@@ -1,5 +1,6 @@
 "use client";
 import { Label } from "@/components/ui/label";
+import { roundToTwoDecimalPlaces } from "@/lib/roundToTwoDecimalPlaces";
 import { CircularProgressbar, buildStyles } from "react-circular-progressbar";
 import "react-circular-progressbar/dist/styles.css";
 
@@ -20,7 +21,7 @@ const Metrics = ({ data }: MetricsProps) => {
           value={data.cpu}
           maxValue={100}
           minValue={0}
-          text={`${data.cpu}%`}
+          text={`${roundToTwoDecimalPlaces(data.cpu)}%`}
         />
       </div>
       <div className=" flex flex-col gap-4 w-[300px] items-center">
@@ -30,7 +31,7 @@ const Metrics = ({ data }: MetricsProps) => {
           value={data.memory}
           maxValue={100}
           minValue={0}
-          text={`${data.memory}%`}
+          text={`${roundToTwoDecimalPlaces(data.memory)}%`}
           styles={buildStyles({
 
            
