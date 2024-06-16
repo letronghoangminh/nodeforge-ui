@@ -35,13 +35,20 @@ const DataCard = ({ data }: DataCardProps) => {
     toast.success("copied to clipboard.");
   };
 
+  const urlDomain = useMemo(() => {
+    if(data.type === "FRONTEND"){
+      return `https://${data.amplifyConfiguration?.subdomain}.nodeforge.site`
+    }
+    return `https://${data.ecsConfiguration?.subdomain}.nodeforge.site`
+  },[data])
+
   const { data: checkData } = useQuery<{ status: number; data: any }>({
-    queryKey: ["WEBSITE_STATUS"],
+    queryKey: ["WEBSITE_STATUS", urlDomain],
     queryFn: async () => {
       const response = await axios.post(
         process.env.NEXT_PUBLIC_API_URL + `/api/getUrl`,
         {
-          url: `https://${data.amplifyConfiguration?.subdomain}.nodeforge.site`,
+          url: urlDomain,
           headers: {
             "Content-Type": "application/json",
             authorization: `Bearer ${session?.accessToken}`,
@@ -58,6 +65,7 @@ const DataCard = ({ data }: DataCardProps) => {
   });
 
   const websiteStatus = useMemo(() => {
+    console.log("checkData", checkData);
     if (!checkData) {
       return "INACTIVE";
     }
@@ -68,12 +76,7 @@ const DataCard = ({ data }: DataCardProps) => {
   }, [checkData]);
 
 
-  const urlDomain = useMemo(() => {
-    if(data.type === "FRONTEND"){
-      return `https://${data.amplifyConfiguration?.subdomain}.nodeforge.site`
-    }
-    return `https://${data.ecsConfiguration?.subdomain}.nodeforge.site`
-  },[data])
+
 
   return (
     <Card className="w-[1200px]">
