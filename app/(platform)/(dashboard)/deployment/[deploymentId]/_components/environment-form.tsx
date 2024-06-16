@@ -34,13 +34,14 @@ interface EnvironmentFormProps {
     id: number;
     envVars: Record<string, string>;
   };
+  isShow: boolean;
 }
 function convertObjectToArray(obj: Record<string, any>) {
     return Object.entries(obj).map(([key, value]) => ({ key, value }));
   }
   
 
-const EnvironmentForm = ({ data }: EnvironmentFormProps) => {
+const EnvironmentForm = ({ data, isShow }: EnvironmentFormProps) => {
     const [loading, setLoading] = useState(false);
   const { data: session, status } = useSession();
   const router = useRouter();
@@ -145,7 +146,7 @@ const EnvironmentForm = ({ data }: EnvironmentFormProps) => {
                           className="flex-1"
                           disabled={loading}
                           placeholder="Value"
-                          value={envVar.value}
+                          value={isShow ? envVar.value : '****'} 
                           onChange={(e) =>
                             handleEnvVarChange(index, "value", e.target.value)
                           }

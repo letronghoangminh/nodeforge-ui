@@ -19,11 +19,6 @@ export type DeploymentColumn = {
 export const columns: ColumnDef<DeploymentColumn>[] = [
 
   {
-    accessorKey: "id",
-    header: "id",
-    cell: ({ row }) => <CellData data={row.original} id={"id"} />,
-  },
-  {
     accessorKey: "name",
     header: "SERVICE NAME",
     cell: ({ row }) => <CellData data={row.original} id={"name"} />,

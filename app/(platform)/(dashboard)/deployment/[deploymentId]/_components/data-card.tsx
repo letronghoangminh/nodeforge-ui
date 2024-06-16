@@ -42,34 +42,36 @@ const DataCard = ({ data }: DataCardProps) => {
     return `https://${data.ecsConfiguration?.subdomain}.nodeforge.site`
   },[data])
 
-  const { data: checkData } = useQuery<{ status: number; data: any }>({
+  const { data: checkData } = useQuery<{ data: boolean}>({
     queryKey: ["WEBSITE_STATUS", urlDomain],
     queryFn: async () => {
-      const response = await axios.post(
-        process.env.NEXT_PUBLIC_API_URL + `/api/getUrl`,
+      const response = await fetch(
+        "https://api.nodeforge.site/" + `api/deployment/ping`,
         {
-          url: urlDomain,
+          method: "POST",
+          body: JSON.stringify({
+            url: urlDomain,
+          }),
           headers: {
             "Content-Type": "application/json",
             authorization: `Bearer ${session?.accessToken}`,
             ...corsHeaders,
           },
         }
-      );
+      ).then((res) => res.json());
+      console.log("response", response);
       return {
-        status: response.status,
-        data: response.data,
+        data: response.ok,
       };
     },
     refetchInterval: 10 * 1000,
   });
 
   const websiteStatus = useMemo(() => {
-    console.log("checkData", checkData);
     if (!checkData) {
       return "INACTIVE";
     }
-    if (checkData?.status >= 200 && checkData?.status < 300) {
+    if (checkData?.data) {
       return "ACTIVE";
     }
     return "INACTIVE";

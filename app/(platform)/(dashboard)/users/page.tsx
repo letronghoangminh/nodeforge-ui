@@ -17,6 +17,7 @@ async function getData() {
             "Authorization": `Bearer ${session?.accessToken}`
         }
     })
+    console.log(res)
     if (!res.ok) {
       toast.error('Failed to fetch users.');
       console.log(res.statusText)
@@ -39,6 +40,8 @@ const UsersPage = async () => {
       },
       deployments: Deployment[]
     }[] = await getData();
+
+    console.log("data",data)
 
     const formattedUsers:UserColumn[]  = data.map((item) => {
         return {

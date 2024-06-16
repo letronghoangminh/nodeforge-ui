@@ -17,6 +17,9 @@ import Metrics from "./metrics";
 import { useQuery } from "@tanstack/react-query";
 import { useSession } from "next-auth/react";
 import { Skeleton } from "@/components/ui/skeleton";
+import { Button } from "@/components/ui/button";
+import { EyeIcon, EyeOffIcon } from "lucide-react";
+import { useState } from "react";
 
 interface TabsDeploymentProps {
   type: "BACKEND" | "FRONTEND";
@@ -25,7 +28,7 @@ interface TabsDeploymentProps {
 
 const TabsDeployment = ({ type, deploymentId }: TabsDeploymentProps) => {
   const { data: session, status } = useSession();
-
+  const [isShow, setIsShow] = useState(true);
 
   const { data: logs } = useQuery<{ timestamp: string; message: string }[]>({
     queryKey: ["logs", deploymentId],
@@ -147,10 +150,15 @@ const TabsDeployment = ({ type, deploymentId }: TabsDeploymentProps) => {
         <Card>
           <CardHeader>
             <CardTitle>Environment</CardTitle>
-            <CardDescription>
-              Set environment-specific config and secrets (such as API keys),
-              then read those values from your code.
-            </CardDescription>
+            <div className="flex items-center justify-between">
+              <CardDescription>
+                Set environment-specific config and secrets (such as API keys),
+                then read those values from your code.
+              </CardDescription>
+              <Button size={"icon"} variant={"default"} onClick={() => setIsShow(!isShow)} >
+                  {isShow ? <EyeOffIcon className="h-4 w-4" /> : <EyeIcon className="h-4 w-4"  />}
+              </Button>
+            </div>
           </CardHeader>
           <CardContent className="space-y-2">
             <EnvironmentForm
@@ -162,6 +170,7 @@ const TabsDeployment = ({ type, deploymentId }: TabsDeploymentProps) => {
                   }
                 }
               }
+              isShow={isShow}
             />
           </CardContent>
         </Card>
