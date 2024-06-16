@@ -14,14 +14,19 @@ import {
 import { useCurrentUser } from "@/hooks/use-current-user";
 import { Role } from "@/types";
 import { useSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
 
 export function NavigationMenuLeft() {
   const {data, status } = useSession();
+
+  const router = useRouter();
+
   React.useEffect(() => {
-
-  }, [status])
-
-  if(status === "loading") return null;
+    console.log(status);
+    if (status === 'unauthenticated') {
+      window.location.reload(); 
+    }
+  }, [status, router]);
 
   return (
     <NavigationMenu>
