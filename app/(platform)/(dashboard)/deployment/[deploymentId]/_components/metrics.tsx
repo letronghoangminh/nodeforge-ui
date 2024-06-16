@@ -21,7 +21,7 @@ const Metrics = ({ data }: MetricsProps) => {
           value={data.cpu}
           maxValue={100}
           minValue={0}
-          text={`${roundToTwoDecimalPlaces(data.cpu)}%`}
+          text={`${roundToTwoDecimalPlaces(+data.cpu)}%`}
         />
       </div>
       <div className=" flex flex-col gap-4 w-[300px] items-center">
@@ -31,7 +31,7 @@ const Metrics = ({ data }: MetricsProps) => {
           value={data.memory}
           maxValue={100}
           minValue={0}
-          text={`${roundToTwoDecimalPlaces(data.memory)}%`}
+          text={`${roundToTwoDecimalPlaces(+data.memory)}%`}
           styles={buildStyles({
 
            
