@@ -170,9 +170,10 @@ const NewForm = () => {
                 "Content-Type": "application/json",
                 authorization: `Bearer ${session?.accessToken}`,
             }
-        }).then((res) => res.json());
-        if(!(res.statusCode === 200)  ){
-          toast.error(res.message || "Something went wrong")
+        })
+
+        if(!res.ok){
+          toast.error(res.statusText || "Something went wrong")
           return;
         }
         toast.success("Deployment created successfully")

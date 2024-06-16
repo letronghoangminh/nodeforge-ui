@@ -48,7 +48,7 @@ const ProfileForm = ({initialData}: ProfileFormProps) => {
   const onSubmit = async (data: ProfileFormValues) => {
     try {
       setLoading(true);
-      const res = await fetch("https://api.nodeforge.site/" + `api/users/${session?.user.username || ""}`, {
+      const res = await fetch("https://api.nodeforge.site/" + `api/users/${session?.user?.username || ""}`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
