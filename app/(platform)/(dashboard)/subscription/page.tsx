@@ -20,7 +20,7 @@ const SubscriptionPage = async () => {
         </div> */}
         <div className="flex flex-row items-center justify-between rounded-lg border p-3 shadow-sm">
           <p className=" text-sm font-medium">Subscription Type</p>
-          <Badge variant={"success"}>Free</Badge>
+          <Badge variant={"success"}>FREE</Badge>
         </div>
         <div className="flex flex-row items-center justify-between rounded-lg border p-3 shadow-sm">
           <p className=" text-sm font-medium">Limit Deployment</p>
