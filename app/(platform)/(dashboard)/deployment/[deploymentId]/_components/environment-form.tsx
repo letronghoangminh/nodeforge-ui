@@ -42,7 +42,7 @@ function convertObjectToArray(obj: Record<string, any>) {
   
 
 const EnvironmentForm = ({ data, isShow }: EnvironmentFormProps) => {
-    const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(false);
   const { data: session, status } = useSession();
   const router = useRouter();
   const [envVarFields, setEnvVarFields] = useState(convertObjectToArray(data?.envVars));

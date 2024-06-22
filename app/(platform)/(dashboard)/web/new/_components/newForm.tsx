@@ -504,9 +504,9 @@ const NewForm = () => {
           <div className="w-full justify-end flex" >
             <Button
               type="submit"
-              variant={"destructive"}
+              variant={"green"}
               disabled={isSubmitting || !isValid}
-            >Deployment</Button>
+            >Deploy</Button>
           </div>
         </form>
       </Form>

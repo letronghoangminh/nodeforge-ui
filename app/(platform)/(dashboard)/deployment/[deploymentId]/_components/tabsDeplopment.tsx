@@ -28,7 +28,7 @@ interface TabsDeploymentProps {
 
 const TabsDeployment = ({ type, deploymentId }: TabsDeploymentProps) => {
   const { data: session, status } = useSession();
-  const [isShow, setIsShow] = useState(true);
+  const [isShow, setIsShow] = useState(false);
 
   const { data: logs } = useQuery<{ timestamp: string; message: string }[]>({
     queryKey: ["logs", deploymentId],
