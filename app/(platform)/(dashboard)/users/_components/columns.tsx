@@ -25,8 +25,8 @@ export const columns: ColumnDef<UserColumn>[] = [
   },
   {
     accessorKey: "username",
-    header: "USER NAME",
-    cell: ({ row }) => <CellData data={row.original} id={"name"} />,
+    header: "USERNAME",
+    cell: ({ row }) => <CellData data={row.original} id={"username"} />,
   },
   {
     accessorKey: "name",
