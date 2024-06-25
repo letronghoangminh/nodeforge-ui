@@ -68,7 +68,7 @@ const DeploymentsPage = async ({
         <div className="flex-col w-full h-full">
         <div className="flex-1 space-y-4 p-8 pt-6">
           <DeploymentClient name={searchParams.userName} data={formattedDeployments} /> 
-          <SubscriptionCard data={subscriptionData}  />
+          <SubscriptionCard data={subscriptionData} isAdmin={true}  />
         </div>
       </div>
     );
